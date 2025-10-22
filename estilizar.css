@@ -1,0 +1,90 @@
+
+@import url(;('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&family=Lora:ital,wght@0,400..700;1,400..700&display=swap'));        /*link da fonte*/
+
+ 
+*{
+  font-family: "Karla", sans-serif;
+  margin: 0;
+  padding: 0;                     /*definindo a fonte*/
+  box-sizing: border-box;
+}
+
+body{
+
+  background-color: rgba(115, 150, 115, 0.692);
+
+
+}
+
+.btn-default{  /*personalização do botão "peça aqui"*/
+
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(130, 145, 47);
+  border-radius: 15px;
+  padding: 10px 14px;
+  font-weight: 700;
+  box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.1); /*borda e cor da borda*/
+  cursor: pointer;
+  transition: background-color .3s ease; /*efeito ao passar em cima do nome*/
+ 
+
+}
+.btn-default:hover{
+  background-color: blanchedalmond; /*vai mudar de cor ao passa em cima do nome*/
+}
+
+header{
+
+    width: 100%; /*largura*/
+    padding: 28px 8%; /*pra fica responsivo*/
+
+}
+
+#navbar {
+
+    width: 100%;
+    display: flex; /*pra ficarem um do lado do outro*/
+    align-items: center; /*alinha ao centro*/
+    justify-content: space-between; /*vai jogar os itens do aldo do outro*/
+
+}
+
+#nav_logo{  
+
+ font-size: 21px;
+ color:rgba(12, 11, 11, 0.938) ;
+  }
+
+#nav_List{
+
+display: flex;  /*UM AO LADO DO OUTRO*/
+list-style: none; /*TIRA A BOLINHA QUANDO SE FORMA A LISTA*/
+gap: 48px; /*ESPACAMENTO*/
+
+  }
+
+  .nav-item a{ /*alterando a lista*/
+
+    text-decoration: none;
+    color: rgb(46, 128, 63) ;
+    font-weight: 600; /*grossura da fonte*/
+  }
+.nav-item.active a{  /*alterando o botao inicar*/
+  color: rgba(24, 63, 39, 0.966);
+  border-bottom: 3px solid rgb(130, 147, 47);
+
+}
+
+#mobile_btn{
+
+  display: none;
+}
+#mobile_menu{
+
+  display: none;
+}
+
+
