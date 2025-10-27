@@ -15,6 +15,10 @@ body{
 
 
 }
+  section{
+    padding: 28px 8%  /*para a pagina fica toda no mesmo padrão*/
+
+  }
 
 .btn-default{  /*personalização do botão "peça aqui"*/
 
@@ -43,9 +47,11 @@ header{
 
 }
 
+
+
 #navbar {
 
-    width: 100%;
+    width: 100%; /*largura*/
     display: flex; /*pra ficarem um do lado do outro*/
     align-items: center; /*alinha ao centro*/
     justify-content: space-between; /*vai jogar os itens do aldo do outro*/
@@ -102,25 +108,264 @@ gap: 48px; /*ESPACAMENTO*/
     }
 
     #mobile_menu.active{
-      display: block;
+      display: flex;
       flex-direction: column;
       align-items: center;
+      gap: 20px;
+     
 
 
     }
-    #mobile-nav_list{
+    #mobile_nav_List{
 
       display: flex;
-      gap: 12px;
       flex-direction: column;
+      gap: 25px;
+      padding: 15px 0px;
+    
+    }
+  }
+  #mobile_nav_List .nav-item{
+
+    list-style: none;
+    text-align: center;
+  }
+
+     #home{
+       
+      display: flex;
+      min-height: calc(100vh - 98px);
+     
+      
+
+
     }
 
 
+     #cta{
+
+        width: 35%;
+        display: flex;
+        flex-direction: column;
+        gap: 35px ;
+        margin-top: 5%;
 
 
+    }
+    
+    #cta .title{
+
+      font-size: 3rem;
+      color: rgba(0, 0, 0, 0.8)
+    }
+
+  #cta .descrição{
+
+  font-size: 1.3rem;
+  }
+
+  #cta_buttons{
+
+    display: flex;
+    gap:  15px;
+  }
+
+  #cta_buttons a{
+
+    text-decoration: none;
+  }
+
+  #telefone{
+
+    background-color: beige;
+   border-radius: 30px ;
+   display: flex;
+   gap: 7px;
+   align-items: center;
+   padding: 10px 10px;
+   font-weight: 500;
+   
+  }
+
+  .redes-sociais-buttons{
+    display:flex ;
+    gap: 18px;
+
+  }
+  .redes-sociais-buttons a{
+
+    font-size: 1.3rem;
+    display: flex;
+    height: 25px;
+    width: 25px;
+    border-radius: 100px;
+    background-color: beige;
+    text-decoration: none;
+  }
+
+#banner{
+
+  display: flex;
+  align-items: start;
+  justify-content: end; /*ficar a direita*/
+  width: 40%;
+}
+
+#banner img{
+
+  height: 55%; /*altura*/
+  width: fit-content; 
+  
+}
+
+   @media screen and (max-width : 1170px) { 
+
+  #home{
+  min-height: 100%;
+ padding-top: 0px;
+
+  }
+
+  #banner,
+  #banner img,
+  #home .shape{
+
+    display: none;
+  }
+
+   #cta{
+
+    width: 100%;
+   text-align: center;
+    align-items: center;
+  }
+
+  @media  screen and (max-width : 470px) {
+    #telefone button {
+      display: none;
+    }
+    
+  } }
+
+   
+    
+
+   #menu{
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    min-height: 15vh;
+
+    }
+
+    .pizzas{
+
+      display : flex;
+      gap: 25px;
+      align-items: center;
+      margin-top: 40px;
+      width: calc(33% - 20px);
+      flex-direction: column;
+    
+      
+      
+     
+    }
+
+    #pizzas_pratos{
 
 
+     display: flex;
+      width: 100%;
+     justify-content: center;
+     flex-wrap: wrap;
+      margin-top: 10px;
+    
+     
+      
+     
+    }
+
+    .pizza-foto{
+
+    width: 100%;
+    height: 250px;
+    max-width: 250px;
+    justify-content: center;
+    margin-top: 20px;
+    background-color: blanchedalmond
+
+  
+  }
+
+  .section-subtitle{
+
+    
+    font-weight: 700;
+    color: blanchedalmond;
+    font-size: 1.2rem;
+    margin-top: 20px;
+    text-align: center;
+   
+  }
+
+  .section-title{
+
+  color: rgb(130,145,47);
+  font-size: 2rem;
+
+
+  }
+  .section-title summary{
+
+    cursor: pointer;
+    text-align: center;
+  }
+
+
+    .summary{
+
+
+      cursor: pointer;
+      list-style: none;
+    }
+    
+
+    .pizza-descrição{
+
+      margin-top: 10px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.0rem; 
+      align-items: center;
+    
+    }
+
+      .pizza-titulo{
+
+        font-size: 1.8rem;
+        text-align: center;
+
+      }
+
+      #pizza-preço{
+
+        margin-top: 10px;
+        font-weight: 700;
+        font-size: 1.2rem;
+        text-align: center; 
+        gap: 10px;
+      }
 
 
 }
+
+
+
+
+
+
+
 
