@@ -44,6 +44,7 @@ header{
 
     width: 100%; /*largura*/
     padding: 28px 8%; /*pra fica responsivo*/
+    background-color: blanchedalmond;
 
 }
 
@@ -358,6 +359,145 @@ gap: 48px; /*ESPACAMENTO*/
         text-align: center; 
         gap: 10px;
       }
+
+      @media screen and (max-width : 1170px){
+
+        #pizzas-pratos{
+
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+        .pizzas{
+
+          width: calc(50% - 20px);
+        }
+
+      }
+
+       @media screen and (max-width : 700px){
+
+        .pizzas{
+
+          width: 100%;
+        }
+
+        #menu .section-subtitle{
+
+          text-align: center;
+        }
+
+       }
+
+       #menu2{
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    min-height: 10vh;
+
+    }
+
+    .pizzasdoces{
+
+      display : flex;
+      gap: 30px;
+      align-items: center;
+      margin-top: 40px;
+      width: calc(33% - 20px);
+      flex-direction: column;
+    
+      
+      
+     
+    }
+
+    #pizzas_pratosdoces{
+
+
+     display: flex;
+      width: 100%;
+     justify-content: center;
+     flex-wrap: wrap;
+      margin-top: 10px;
+    
+     
+      
+     
+    }
+
+    .pizza-foto2{
+
+    width: 100%;
+    height: 250px;
+    max-width: 250px;
+    justify-content: center;
+    margin-top: 20px;
+    background-color: blanchedalmond
+
+  
+  }
+
+  .section-subtitle2{
+
+    
+    font-weight: 700;
+    color: blanchedalmond;
+    font-size: 1.2rem;
+    margin-top: 20px;
+    text-align: center;
+   
+  }
+
+  .section-title2{
+
+  color: rgb(130,145,47);
+  font-size: 2rem;
+
+
+  }
+  .section-title .summary2{
+
+    cursor: pointer;
+    text-align: center;
+  }
+
+
+    .summary2{
+
+
+      cursor: pointer;
+      list-style: none;
+    }
+    
+
+    .pizza-descrição2{
+
+      margin-top: 15px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.0rem; 
+      align-items: center;
+    
+    }
+
+      .pizza-titulo2{
+
+        font-size: 1.8rem;
+        text-align: center;
+
+      }
+
+      #pizza-preço2{
+
+        margin-top: 10px;
+        font-weight: 700;
+        font-size: 1.2rem;
+        text-align: center; 
+        gap: 10px;
+      }
+
+
 
 
 }
