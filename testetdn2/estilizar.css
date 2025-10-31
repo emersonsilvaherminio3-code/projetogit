@@ -11,7 +11,7 @@
 
 body{
 
-  background-color: rgba(115, 150, 115, 0.692);
+  background-color: rgb(199, 209, 148);  /*cor de fundo da pagina*/
 
 
 }
@@ -209,7 +209,7 @@ gap: 48px; /*ESPACAMENTO*/
   display: flex;
   align-items: start;
   justify-content: end; /*ficar a direita*/
-  width: 40%;
+  width: 52%;
 }
 
 #banner img{
@@ -304,7 +304,7 @@ gap: 48px; /*ESPACAMENTO*/
   .section-subtitle{
 
     
-    font-weight: 700;
+    font-weight: 550;
     color: blanchedalmond;
     font-size: 1.2rem;
     margin-top: 20px;
@@ -394,7 +394,7 @@ gap: 48px; /*ESPACAMENTO*/
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    min-height: 10vh;
+    min-height: 15vh;
 
     }
 
@@ -453,6 +453,7 @@ gap: 48px; /*ESPACAMENTO*/
 
   color: rgb(130,145,47);
   font-size: 2rem;
+  
 
 
   }
@@ -498,6 +499,124 @@ gap: 48px; /*ESPACAMENTO*/
       }
 
 
+      #menu3{
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    min-height: 15vh;
+
+    }
+
+    .guaranas{
+
+      display : flex;
+      gap: 30px;
+      align-items: center;
+      margin-top: 40px;
+      width: calc(33% - 20px);
+      flex-direction: column;
+    
+      
+      
+     
+    }
+
+    #bebidas{
+
+
+     display: flex;
+      width: 100%;
+     justify-content: center;
+     flex-wrap: wrap;
+      margin-top: 10px;
+    gap: 35px;
+     
+      
+     
+    }
+
+    .bebidas-foto{
+
+    width: 100%;
+    height: 250px;
+    max-width: 250px;
+    justify-content: center;
+    margin-top: 20px;
+    background-color: blanchedalmond
+
+  
+  }
+
+  .section-subtitle3{
+
+    
+    font-weight: 700;
+    color: blanchedalmond;
+    font-size: 1.2rem;
+    margin-top: 20px;
+    text-align: center;
+   
+  }
+
+  .section-title3{
+
+  color: rgb(130,145,47);
+  font-size: 2rem;
+  
+
+
+  }
+  .section-title .summary3{
+
+    cursor: pointer;
+    text-align: center;
+  }
+
+
+    .summary3{
+
+
+      cursor: pointer;
+      list-style: none;
+    }
+    
+
+    .bebidas-descrição{
+
+      margin-top: 15px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.0rem; 
+      align-items: center;
+    
+    }
+
+      .bebidas-titulo{
+
+        font-size: 1.8rem;
+        text-align: center;
+
+      }
+
+      #bebidas-preço{
+
+        margin-top: 10px;
+        font-weight: 700;
+        font-size: 1.2rem;
+        text-align: center; 
+        gap: 10px;
+      }
+
+
+footer{
+
+    width: 100%; /*largura*/
+    padding: 28px 8%; /*pra fica responsivo*/
+    background-color: blanchedalmond;
+
+}
 
 
 }
