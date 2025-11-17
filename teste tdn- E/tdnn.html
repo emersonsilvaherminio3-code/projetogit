@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    
+    <title>TDN Pizzaria</title>
+</head>
+
+<body>
+
+    <header class="content">
+        <div class="logo">
+            <img src="pizza-clipart-png.png" alt="Logo Pizzaria"> <h3>TDN PIZZARIA</h3>
+        </div>
+        <nav>
+            <ul class="list-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#cardapio">Cardápio</a></li>
+                <li><a href="#sobre-nos">Sobre Nós</a></li>
+                <li><a href="#contatos">Contatos</a></li>
+                <li><a href="https://www.instagram.com/tdnpizzaria?igsh=Y2dqcGxrbzE0cmph"><i class="bi bi-instagram"></i></a></li>
+                <li><a href="#"><i class="bi bi-cart2"></i></a></li>
+            </ul>
+        </nav>
+
+        <div class="menu-toggle">
+            <div class="one"></div>
+            <div class="two"></div>
+            <div class="three"></div>
+        </div>
+    </header>
+
+    <section class="first-section" id="home">
+        <div class="conteudo-principal">
+            <h1>Deixe seu dia mais saboroso</h1>
+            <h2>As pizzas mais peso do nordeste</h2>
+            <div class="btn">
+                <button class="reservar">RESERVE A SUA</button>
+                <button class="login-btn" id="openPopup">LOGIN</button>
+                
+                 <!-- POP-UP -->
+              <div class="overlay" id="overlay">
+            <div class="popup">
+            <span class="close-btn" id="closePopup">&times;</span>
+            <h3>insira suas informações</h3>
+            <form id="formlogin">
+                <div class="form-group">
+            <label for="telefone">telefone</label>
+            <input type="telefone" placeholder="(00) 0 0000-0000 " id="telefone" maxlength="16" required>
+              </div>
+                <div class="form-group">
+            <label for="nome">Nome</label>
+            <input type="nome" placeholder="coloque seu nome e sobrenome" id="nome" maxlength="50" required>
+              </div>
+                <div class="form-group">
+            <label for="cpf">CPF</label>
+            <input type="cpf" placeholder="000.000.000-00" id="cpf" maxlength="14" required>
+              </div>
+                <div class="form-group">
+            <label for="Endereço">Endereço</label>
+            <input type="endereco" placeholder="seu endereço" 
+            id="endereco"
+            maxlength="80" required>
+             </div>
+
+            <button type="submit" class="confirmar">Confirmar</button>
+
+               </form>
+              </div>
+            </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="sobre-nos" id="sobre-nos">
+        <div class="main">
+            <div class="content-sobre">
+                <h2>Sobre Nós</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam,
+                    necessitatibus magnam, expedita reiciendis itaque et obcaecati
+                    voluptas, quasi excepturi recusandae cumque! Voluptates,
+                    numquam! Minus, ratione! Similique, id! Esse, quidem totam.</p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam,
+                    necessitatibus magnam, expedita reiciendis itaque et obcaecati
+                    voluptas, quasi excepturi recusandae cumque! Voluptates,
+                    numquam! Minus, ratione! Similique, id! Esse, quidem totam.</p>
+            </div>
+            <div class="img-cozinha">
+                <img src="img/cozinha.jpg" alt="Foto da cozinha da pizzaria"> </div>
+        </div>
+    </section>
+    <section class="cardapio" id="cardapio">
+        <h2>Cardápio</h2>
+        <details>
+            <summary>Pizza salgadas</summary>
+        <div class="itens-cardapio">
+            <div>
+                <img src="https://png.pngtree.com/png-clipart/20240327/original/pngtree-cheese-and-chicken-pizza-png-image_14698365.png" alt="Pizza de Frango"> <div class="info">
+                    <h3>Frango</h3>
+                    <h4><span>6 fatias</span> <span>R$35,00</span></h4>
+                    <h4><span>8 fatias</span> <span>R$45,00</span></h4>
+                    <h4><span>12 fatias</span> <span>R$55,00</span></h4>
+                    <button class="pedir" id="openPopup">Pedir agora</button>
+
+                    <!-- POP-UP DO PRODUTO (ESTILO TDN PIZZARIA) -->
+<div class="overlay" id="pizzaPopup" style="display: none;">
+  <div class="popup-card-tdn">
+    <span class="close-btn" id="closePizzaPopup">&times;</span>
+    <div class="popup-content-tdn">
+      <!-- Imagem da Pizza -->
+      <div class="pizza-img-tdn">
+        <img id="pizzaImage" src="https://png.pngtree.com/png-clipart/20240327/original/pngtree-cheese-and-chicken-pizza-png-image_14698365.png" alt="Pizza selecionada">
+      </div>
+
+      <!-- Informações -->
+      <div class="pizza-info-tdn">
+        <h2 id="pizzaName">Frango</h2>
+        <p class="desc">Molho de tomate, mussarela, frango e cebola</p>
+        <p class="price">R$<span id="pizzaPrice">45,00</span></p>
+
+        <div class="fatias">
+          <h4>Tamanho:</h4>
+          <div class="opcoes-fatias">
+            <label><input type="radio" name="tamanho" value="35" checked> 6 fatias</label>
+            <label><input type="radio" name="tamanho" value="45"> 8 fatias</label>
+            <label><input type="radio" name="tamanho" value="55"> 12 fatias</label>
+          </div>
+        </div>
+
+        <div class="quantidade">
+          <h4>Quantidade:</h4>
+          <div class="contador">
+            <button id="menos">−</button>
+            <span id="quantidade">1</span>
+            <button id="mais">+</button>
+          </div>
+        </div>
+
+        <button class="btn-tdn" id="addToCart">
+          <a href="#" class="link-btn">ADICIONAR — R$ <span id="totalPrice">45,00</span></a>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+                </div>
+            </div>
+            <div>
+                <img src="https://bretas.vtexassets.com/arquivos/ids/183748/6571bee5558925a4e8897e3d.jpg?v=638375500577230000"> <div class="info">
+                    <h3>Calabresa</h3>
+                    <h4><span>6 fatias</span> <span>R$35,00</span></h4>
+                    <h4><span>8 fatias</span> <span>R$45,00</span></h4>
+                    <h4><span>12 fatias </span><span>R$55,00</span></h4>
+                    <button class="pedir" id="openPopup">Pedir agora</button>
+                    <!-- POP-UP DO PRODUTO (ESTILO TDN PIZZARIA) -->
+<div class="overlay" id="pizzaPopup" style="display: none;">
+  <div class="popup-card-tdn">
+    <span class="close-btn" id="closePizzaPopup">&times;</span>
+    <div class="popup-content-tdn">
+      <!-- Imagem da Pizza -->
+      <div class="pizza-img-tdn">
+        <img id="pizzaImage" src="https://bretas.vtexassets.com/arquivos/ids/183748/6571bee5558925a4e8897e3d.jpg?v=638375500577230000" alt="Pizza selecionada">
+      </div>
+
+      <!-- Informações -->
+      <div class="pizza-info-tdn">
+        <h2 id="pizzaName">Calabresa</h2>
+        <p class="desc">Molho de tomate, mussarela, calabresa e cebola</p>
+        <p class="price">R$ <span id="pizzaPrice">45,00</span></p>
+
+        <div class="fatias">
+          <h4>Tamanho:</h4>
+          <div class="opcoes-fatias">
+            <label><input type="radio" name="tamanho" value="35" checked> 6 fatias</label>
+            <label><input type="radio" name="tamanho" value="45"> 8 fatias</label>
+            <label><input type="radio" name="tamanho" value="55"> 12 fatias</label>
+          </div>
+        </div>
+
+        <div class="quantidade">
+          <h4>Quantidade:</h4>
+          <div class="contador">
+            <button id="menos">−</button>
+            <span id="quantidade">1</span>
+            <button id="mais">+</button>
+          </div>
+        </div>
+
+        <button class="btn-tdn" id="addToCart">
+          <a href="#" class="link-btn">ADICIONAR — R$ <span id="totalPrice">45,00</span></a>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+                    
+                </div>
+            </div>
+            <div>
+                <img src="https://mercantilatacado.vtexassets.com/arquivos/ids/184481-800-auto?v=638350433052930000&width=800&height=auto&aspect=true" alt="Pizza Portuguesa"> <div class="info">
+                    <h3>Portuguesa</h3>
+                    <h4><span>6 fatias</span> <span>R$35,00</span></h4>
+                    <h4><span>8 fatias</span> <span>R$45,00</span></h4>
+                    <h4><span>12 fatias</span> <span>R$55,00</span></h4>
+                    <button class="pedir" id="openPopup">Pedir agora</button>
+                    <!-- POP-UP DO PRODUTO (ESTILO TDN PIZZARIA) -->
+<div class="overlay" id="pizzaPopup" style="display: none;">
+  <div class="popup-card-tdn">
+    <span class="close-btn" id="closePizzaPopup">&times;</span>
+    <div class="popup-content-tdn">
+      <!-- Imagem da Pizza -->
+      <div class="pizza-img-tdn">
+        <img id="pizzaImage" src="https://mercantilatacado.vtexassets.com/arquivos/ids/184481-800-auto?v=638350433052930000&width=800&height=auto&aspect=true" alt="Pizza selecionada">
+      </div>
+
+      <!-- Informações -->
+      <div class="pizza-info-tdn">
+        <h2 id="pizzaName">portuguesa</h2>
+        <p class="desc">Molho de tomate, mussarela, calabresa e cebola</p>
+        <p class="price">R$ <span id="pizzaPrice">45,00</span></p>
+
+        <div class="fatias">
+          <h4>Tamanho:</h4>
+          <div class="opcoes-fatias">
+            <label><input type="radio" name="tamanho" value="35" checked> 6 fatias</label>
+            <label><input type="radio" name="tamanho" value="45"> 8 fatias</label>
+            <label><input type="radio" name="tamanho" value="55"> 12 fatias</label>
+          </div>
+        </div>
+
+        <div class="quantidade">
+          <h4>Quantidade:</h4>
+          <div class="contador">
+            <button id="menos">−</button>
+            <span id="quantidade">1</span>
+            <button id="mais">+</button>
+          </div>
+        </div>
+
+        <button class="btn-tdn" id="addToCart">
+          <a href="#" class="link-btn">ADICIONAR — R$ <span id="totalPrice">45,00</span></a>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+                </div>
+            </div>
+            <div>
+                <img src="https://s3-sa-east-1.amazonaws.com/superimg/img.produtos/6455572/645/img_1200_1.png" alt="Pizza de Mussarela"> <div class="info">
+                    <h3>Mussarela</h3>
+                    <h4><span>6 fatias</span> <span>R$35,00</span></h4>
+                    <h4><span>8 fatias</span> <span>R$45,00</span></h4>
+                    <h4><span>12 fatias </span><span>R$55,00</span></h4>
+                    <button class="pedir" id="openPopup">Pedir agora</button>
+                    <!-- POP-UP DO PRODUTO (ESTILO TDN PIZZARIA) -->
+<div class="overlay" id="pizzaPopup" style="display: none;">
+  <div class="popup-card-tdn">
+    <span class="close-btn" id="closePizzaPopup">&times;</span>
+    <div class="popup-content-tdn">
+      <!-- Imagem da Pizza -->
+      <div class="pizza-img-tdn">
+        <img id="pizzaImage" src="https://s3-sa-east-1.amazonaws.com/superimg/img.produtos/6455572/645/img_1200_1.png" alt="Pizza selecionada">
+      </div>
+
+      <!-- Informações -->
+      <div class="pizza-info-tdn">
+        <h2 id="pizzaName">Mussarela</h2>
+        <p class="desc">Molho de tomate e mussarela </p>
+        <p class="price">R$ <span id="pizzaPrice">45,00</span></p>
+
+        <div class="fatias">
+          <h4>Tamanho:</h4>
+          <div class="opcoes-fatias">
+            <label><input type="radio" name="tamanho" value="35" checked> 6 fatias</label>
+            <label><input type="radio" name="tamanho" value="45"> 8 fatias</label>
+            <label><input type="radio" name="tamanho" value="55"> 12 fatias</label>
+          </div>
+        </div>
+
+        <div class="quantidade">
+          <h4>Quantidade:</h4>
+          <div class="contador">
+            <button id="menos">−</button>
+            <span id="quantidade">1</span>
+            <button id="mais">+</button>
+          </div>
+        </div>
+
+        <button class="btn-tdn" id="addToCart">
+          <a href="#" class="link-btn">ADICIONAR — R$ <span id="totalPrice">45,00</span></a>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+                </div>
+            </div>
+            </div>
+            </details>
+
+            <details>
+                <summary>Pizzas doces</summary>
+                <div class="itens-cardapio">
+            <div>
+                <img src="https://img.cdndsgni.com/preview/11508821.jpg" alt="Pizza de Chocolate"> <div class="info">
+                    <h3>Chocolate</h3>
+                    <h4><span>6 fatias</span> <span>R$35,00</span></h4>
+                    <h4><span>8 fatias</span> <span>R$45,00</span></h4>
+                    <h4><span>12 fatias</span> <span>R$55,00</span></h4>
+                    <button class="pedir" id="openPopup">Pedir agora</button>
+                    <!-- POP-UP DO PRODUTO (ESTILO TDN PIZZARIA) -->
+<div class="overlay" id="pizzaPopup" style="display: none;">
+  <div class="popup-card-tdn">
+    <span class="close-btn" id="closePizzaPopup">&times;</span>
+    <div class="popup-content-tdn">
+      <!-- Imagem da Pizza -->
+      <div class="pizza-img-tdn">
+        <img id="pizzaImage" src="https://img.cdndsgni.com/preview/11508821.jpg" alt="Pizza selecionada">
+      </div>
+
+      <!-- Informações -->
+      <div class="pizza-info-tdn">
+        <h2 id="pizzaName">Chocolate</h2>
+        <p class="desc">chocolate ao leite</p>
+        <p class="price">R$ <span id="pizzaPrice">45,00</span></p>
+
+        <div class="fatias">
+          <h4>Tamanho:</h4>
+          <div class="opcoes-fatias">
+            <label><input type="radio" name="tamanho" value="35" checked> 6 fatias</label>
+            <label><input type="radio" name="tamanho" value="45"> 8 fatias</label>
+            <label><input type="radio" name="tamanho" value="55"> 12 fatias</label>
+          </div>
+        </div>
+
+        <div class="quantidade">
+          <h4>Quantidade:</h4>
+          <div class="contador">
+            <button id="menos">−</button>
+            <span id="quantidade">1</span>
+            <button id="mais">+</button>
+          </div>
+        </div>
+
+        <button class="btn-tdn" id="addToCart">
+          <a href="#" class="link-btn">ADICIONAR — R$ <span id="totalPrice">45,00</span></a>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+                </div>
+            </div>
+            <div>
+                <img src="https://pizzariazermatt.com.br/imgs/produto-pizza-sabor-sensacao-delivery-florianopolis-ponta-de-baixo-sao-jose.png" alt="Pizza de Sensação"> <div class="info">
+                    <h3>Sensação</h3>
+                    <h4><span>6 fatias</span> <span>R$35,00</span></h4>
+                    <h4><span>8 fatias</span> <span>R$45,00</span></h4>
+                    <h4><span>12 fatias </span><span>R$55,00</span></h4>
+                    <button class="pedir" id="openPopup">Pedir agora</button>
+                    <!-- POP-UP DO PRODUTO (ESTILO TDN PIZZARIA) -->
+<div class="overlay" id="pizzaPopup" style="display: none;">
+  <div class="popup-card-tdn">
+    <span class="close-btn" id="closePizzaPopup">&times;</span>
+    <div class="popup-content-tdn">
+      <!-- Imagem da Pizza -->
+      <div class="pizza-img-tdn">
+        <img id="pizzaImage" src="https://pizzariazermatt.com.br/imgs/produto-pizza-sabor-sensacao-delivery-florianopolis-ponta-de-baixo-sao-jose.png" alt="Pizza selecionada">
+      </div>
+
+      <!-- Informações -->
+      <div class="pizza-info-tdn">
+        <h2 id="pizzaName">Sensaçao</h2>
+        <p class="desc">chocolate e morangos frescos</p>
+        <p class="price">R$ <span id="pizzaPrice">45,00</span></p>
+
+        <div class="fatias">
+          <h4>Tamanho:</h4>
+          <div class="opcoes-fatias">
+            <label><input type="radio" name="tamanho" value="35" checked> 6 fatias</label>
+            <label><input type="radio" name="tamanho" value="45"> 8 fatias</label>
+            <label><input type="radio" name="tamanho" value="55"> 12 fatias</label>
+          </div>
+        </div>
+
+        <div class="quantidade">
+          <h4>Quantidade:</h4>
+          <div class="contador">
+            <button id="menos">−</button>
+            <span id="quantidade">1</span>
+            <button id="mais">+</button>
+          </div>
+        </div>
+
+        <button class="btn-tdn" id="addToCart">
+          <a href="#" class="link-btn">ADICIONAR — R$ <span id="totalPrice">45,00</span></a>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+                </div>
+            </div>
+            <div>
+                <img src="" alt="Pizza de Confete"> <div class="info">
+                    <h3>Confete</h3>
+                    <h4><span>6 fatias </span><span>R$35,00</span></h4>
+                    <h4><span>8 fatias</span> <span>R$45,00</span></h4>
+                    <h4><span>12 fatias</span> <span>R$55,00</span></h4>
+                    <button class="pedir" id="openPopup">Pedir agora</button>
+                    <!-- POP-UP DO PRODUTO (ESTILO TDN PIZZARIA) -->
+<div class="overlay" id="pizzaPopup" style="display: none;">
+  <div class="popup-card-tdn">
+    <span class="close-btn" id="closePizzaPopup">&times;</span>
+    <div class="popup-content-tdn">
+      <!-- Imagem da Pizza -->
+      <div class="pizza-img-tdn">
+        <img id="pizzaImage" src="" alt="Pizza selecionada">
+      </div>
+
+      <!-- Informações -->
+      <div class="pizza-info-tdn">
+        <h2 id="pizzaName">Confete</h2>
+        <p class="desc">chocolate, leite condensado e confeitos coloridos</p>
+        <p class="price">R$ <span id="pizzaPrice">45,00</span></p>
+
+        <div class="fatias">
+          <h4>Tamanho:</h4>
+          <div class="opcoes-fatias">
+            <label><input type="radio" name="tamanho" value="35" checked> 6 fatias</label>
+            <label><input type="radio" name="tamanho" value="45"> 8 fatias</label>
+            <label><input type="radio" name="tamanho" value="55"> 12 fatias</label>
+          </div>
+        </div>
+
+        <div class="quantidade">
+          <h4>Quantidade:</h4>
+          <div class="contador">
+            <button id="menos">−</button>
+            <span id="quantidade">1</span>
+            <button id="mais">+</button>
+          </div>
+        </div>
+
+        <button class="btn-tdn" id="addToCart">
+          <a href="#" class="link-btn">ADICIONAR — R$ <span id="totalPrice">45,00</span></a>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+                </div>
+            </div>
+            <div>
+                <img src="" alt="Pizza de Prestígio"> <div class="info">
+                    <h3>Prestígio</h3>
+                    <h4><span>6 fatias</span> <span>R$35,00</span></h4>
+                    <h4><span>8 fatias</span> <span>R$45,00</span></h4>
+                    <h4><span>12 fatias</span> <span>R$55,00</span></h4>
+                    <button class="pedir" id="openPopup">Pedir agora</button>
+                    <!-- POP-UP DO PRODUTO (ESTILO TDN PIZZARIA) -->
+<div class="overlay" id="pizzaPopup" style="display: none;">
+  <div class="popup-card-tdn">
+    <span class="close-btn" id="closePizzaPopup">&times;</span>
+    <div class="popup-content-tdn">
+      <!-- Imagem da Pizza -->
+      <div class="pizza-img-tdn">
+        <img id="pizzaImage" src="" alt="Pizza selecionada">
+      </div>
+
+      <!-- Informações -->
+      <div class="pizza-info-tdn">
+        <h2 id="pizzaName">prestígio</h2>
+        <p class="desc">chocolate e coco ralado</p>
+        <p class="price">R$ <span id="pizzaPrice">45,00</span></p>
+
+        <div class="fatias">
+          <h4>Tamanho:</h4>
+          <div class="opcoes-fatias">
+            <label><input type="radio" name="tamanho" value="35" checked> 6 fatias</label>
+            <label><input type="radio" name="tamanho" value="45"> 8 fatias</label>
+            <label><input type="radio" name="tamanho" value="55"> 12 fatias</label>
+          </div>
+        </div>
+
+        <div class="quantidade">
+          <h4>Quantidade:</h4>
+          <div class="contador">
+            <button id="menos">−</button>
+            <span id="quantidade">1</span>
+            <button id="mais">+</button>
+          </div>
+        </div>
+
+        <button class="btn-tdn" id="addToCart">
+          <a href="#" class="link-btn">ADICIONAR — R$ <span id="totalPrice">45,00</span></a>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+                </div>
+            </div>
+        </div>
+        </details>
+   
+        <details>
+            <summary>Bebidas</summary>
+                         <div class="itens-cardapio">
+                 <div>
+                <img src="antartica.jpeg" alt="Guarana Antartica"> <div class="info">
+                    <h3>Antartica</h3>
+                    <h4><span>1L</span> <span>R$6,00</span></h4>
+                    <H4><SPAn>2L</SPAn>
+                    <span>R$11,00</span></H4>
+                    <button class="pedir">Pedir agora</button>
+                </div>
+                    </DIV>  
+                    
+                    <div>
+                    <img src="coca cola.jpeg" alt="Refrigerante Coca Cola"> <div class="info">
+                    <h3>Coca Cola</h3>
+                    <h4><span>1L</span> <span>R$6,00</span></h4>
+                    <H4><SPAn>2L</SPAn>
+                    <span>R$11,00</span></H4>
+                    <button class="pedir">Pedir agora</button>
+                </div>
+                    </DIV>
+                    
+                    <div>
+                    <img src="fanta.jpg" alt="Refrigerante Fanta"> <div class="info">
+                    <h3>Fanta</h3>
+                    <h4><span>1L</span> <span>R$6,00</span></h4>
+                    <H4><SPAn>2L</SPAn>
+                    <span>R$11,00</span></H4>
+                    <button class="pedir">Pedir agora</button>
+                </div>
+                    </DIV>
+                    
+                    <div>
+                    <img src="pepsi.jpeg" alt="Refrigerante Pepsi"> <div class="info">
+                    <h3>Pepsi</h3>
+                    <h4><span>1L</span> <span>R$6,00</span></h4>
+                    <H4><SPAn>2L</SPAn>
+                    <span>R$11,00</span></H4>
+                    <button class="pedir">Pedir agora</button>
+                </div>
+                    </DIV>    
+       </div>
+
+        </details>
+    </section>
+    <section class="contatos" id="contatos">
+        <h3>Contatos</h3>
+        <div class="contatos-secao">
+            <div>
+                <i class="bi bi-telephone"></i>
+                <span>(81) 9 99641479</span>
+            </div>
+            <div>
+                <i class="bi bi-instagram"></i><a href="https://www.instagram.com/tdnpizzaria?igsh=Y2dqcGxrbzE0cmph"><span>tdnpizzaria</span>
+               </a> </i>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <h4>Emerson Jose e Richard Lofiego</h4>
+    </footer>
+
+  
+</body>
+<script src="script2.js"></script>
+</html>     
