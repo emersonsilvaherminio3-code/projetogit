@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" />
+  <link rel="stylesheet" href="gpt.css" />
+
+  <title>TDN Pizzaria</title>
+</head>
+
+<body>
+
+  <header class="content">
+    <div class="logo">
+      <img src="pizza-clipart-png.png" alt="Logo Pizzaria" />
+      <h3>TDN PIZZARIA</h3>
+    </div>
+    <nav>
+      <ul class="list-menu">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#cardapio">Cardápio</a></li>
+        <li><a href="#sobre-nos">Sobre Nós</a></li>
+        <li><a href="#contatos">Contatos</a></li>
+        <li><a href="https://www.instagram.com/tdnpizzaria?igsh=Y2dqcGxrbzE0cmph"><i class="instagram"></i></a></li>
+        <!-- botão do carrinho -->
+        <li><a href="#" id="openCartBtn"><i class="cart-tdn"></i> <span id="cart-badge">0</span></a></li>
+      </ul>
+    </nav>
+
+    <div class="menu-toggle">
+      <div class="one"></div>
+      <div class="two"></div>
+      <div class="three"></div>
+    </div>
+  </header>
+
+  <section class="first-section" id="home">
+    <div class="conteudo-principal">
+      <h1>Deixe seu dia mais saboroso</h1>
+      <h2>As pizzas mais peso do nordeste</h2>
+      <div class="btn">
+        <button class="reservar">RESERVE A SUA</button>
+        <button class="login-btn" id="openLoginBtn">LOGIN</button>
+      </div>
+    </div>
+
+    <!-- MODAL DE LOGIN -->
+    <div id="loginOverlay" class="overlay-hidden">
+      <div id="loginPopup" class="popup-box">
+        <button id="closeLoginBtn" class="close-btn">&times;</button>
+
+        <h3>Entrar / Cadastre-se</h3>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="tel">Telefone</label>
+            <input id="tel" name="telefone" type="tel" maxlength="11" required placeholder="(00) 0 0000-0000" />
+          </div>
+
+          <div class="form-group">
+            <label for="nome">Nome </label>
+            <input id="nome" name="nome" type="text" maxlength="40" required placeholder="Seu nome" />
+          </div>
+
+          <div class="form-group">
+            <label for="cpf">CPF</label>
+            <input id="cpf" name="cpf" type="text" required placeholder="000.000.000-00" maxlength="11" />
+          </div>
+
+          <div class="form-group">
+            <label for="endereco">Endereço</label>
+            <input id="endereco" name="endereco" type="text" maxlength="40" required placeholder="Seu endereço" />
+          </div>
+
+          <button type="submit" class="confirmar">Confirmar</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="sobre-nos" id="sobre-nos">
+    <div class="main">
+      <div class="content-sobre">
+        <h2>Sobre Nós</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, necessitatibus magnam...</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, necessitatibus magnam...</p>
+      </div>
+      <div class="img-cozinha">
+        <img src="" alt="Foto da cozinha da pizzaria" />
+      </div>
+    </div>
+  </section>
+
+  <!-- CARDÁPIO (corrigido: estrutura uniforme por produto) -->
+  <section class="cardapio" id="cardapio">
+    <h2>Cardápio</h2>
+
+    <details>
+      <summary>Pizzas salgadas</summary>
+      <div class="itens-cardapio">
+
+        <!-- exemplo: FRANGO (você já tinha vários; repita/adapte conforme necessário) -->
+        <div class="produto">
+          <img src="https://png.pngtree.com/png-clipart/20240327/original/pngtree-cheese-and-chicken-pizza-png-image_14698365.png" alt="Pizza de Frango" />
+          <div class="info">
+            <h3>Frango</h3>
+            <p class="descrição">Deliciosa combinação de frango desfiado temperado...</p>
+
+            <!-- opção de tamanhos (estes são os "botões rápidos" - clique adiciona ao carrinho) -->
+            <div class="tamanhos">
+              <button class="tamanho-btn" data-size="6" data-price="35.00">6 fatias — R$35,00</button>
+              <button class="tamanho-btn" data-size="8" data-price="45.00">8 fatias — R$45,00</button>
+              <button class="tamanho-btn" data-size="12" data-price="55.00">12 fatias — R$55,00</button>
+            </div>
+
+            <!-- botão que abre o modal do carrinho já com a pizza selecionada -->
+            <button class="pedir-btn" data-nome="Frango">Pedir agora</button>
+          </div>
+        </div>
+
+        <!-- EXEMPLO REAL que você enviou: Calabresa (transformado para o novo padrão) -->
+        <div class="produto">
+          <img src="https://bretas.vtexassets.com/arquivos/ids/183748/6571bee5558925a4e8897e3d.jpg" alt="Pizza Calabresa" />
+          <div class="info">
+            <h3>Calabresa</h3>
+            <p class="descrição">Clássica, saborosa e perfeita para acompanhar sua diversão! Nossa pizza de calabresa é preparada com massa macia, molho caseiro, fatias generosas de calabresa e finalizada com cebola e orégano.</p>
+
+            <div class="tamanhos">
+              <button class="tamanho-btn" data-size="6" data-price="35.00">6 fatias — R$35,00</button>
+              <button class="tamanho-btn" data-size="8" data-price="45.00">8 fatias — R$45,00</button>
+              <button class="tamanho-btn" data-size="12" data-price="55.00">12 fatias — R$55,00</button>
+            </div>
+
+            <button class="pedir-btn" data-nome="Calabresa">Pedir agora</button>
+          </div>
+        </div>
+
+        <!-- Portuguesa -->
+        <div class="produto">
+          <img src="https://mercantilatacado.vtexassets.com/arquivos/ids/184481-800-auto.jpg" alt="Pizza Portuguesa" />
+          <div class="info">
+            <h3>Portuguesa</h3>
+            <p class="descrição">Esse sabor é um dos queridinhos...</p>
+
+            <div class="tamanhos">
+              <button class="tamanho-btn" data-size="6" data-price="35.00">6 fatias — R$35,00</button>
+              <button class="tamanho-btn" data-size="8" data-price="45.00">8 fatias — R$45,00</button>
+              <button class="tamanho-btn" data-size="12" data-price="55.00">12 fatias — R$55,00</button>
+            </div>
+
+            <button class="pedir-btn" data-nome="Portuguesa">Pedir agora</button>
+          </div>
+        </div>
+
+        <!-- continue adicionando seus produtos seguindo o mesmo padrão .produto .info .tamanhos .pedir-btn -->
+
+      </div>
+    </details>
+
+    <!-- detalhes para doces e bebidas (siga o mesmo padrão ao editar) -->
+    <details>
+      <summary>Pizzas doces</summary>
+      <div class="itens-cardapio">
+        <div class="produto">
+          <img src="pzz de chocoloate.jpg" alt="Pizza de Chocolate" />
+          <div class="info">
+            <h3>Chocolate</h3>
+            <p class="descrição">A pizza doce de chocolate...</p>
+
+            <div class="tamanhos">
+              <button class="tamanho-btn" data-size="6" data-price="35.00">6 fatias — R$35,00</button>
+              <button class="tamanho-btn" data-size="8" data-price="45.00">8 fatias — R$45,00</button>
+              <button class="tamanho-btn" data-size="12" data-price="55.00">12 fatias — R$55,00</button>
+            </div>
+
+            <button class="pedir-btn" data-nome="Chocolate">Pedir agora</button>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary>Bebidas</summary>
+      <div class="itens-cardapio">
+        <div class="produto">
+          <img src="antartica.jpeg" alt="Guarana Antartica" />
+          <div class="info">
+            <h3>Antartica</h3>
+            <div class="tamanhos">
+              <button class="tamanho-btn" data-size="1L" data-price="6.00">1L — R$6,00</button>
+              <button class="tamanho-btn" data-size="2L" data-price="11.00">2L — R$11,00</button>
+            </div>
+            <button class="pedir-btn" data-nome="Antartica">Pedir agora</button>
+          </div>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <section class="contatos" id="contatos">
+    <h3>Contatos</h3>
+    <div class="contatos-secao">
+      <div>
+        <i class="bi bi-telephone"></i>
+        <span>(81) 9 99641479</span>
+      </div>
+      <div>
+        <i class="bi bi-instagram"></i>
+        <span>@seu_instagram</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <h4>&copy; Emerson Jose e Richard Lofiego</h4>
+  </footer>
+
+  <!-- ================= CART OVERLAY (modal simples) ================= -->
+  <div id="cartOverlay" class="overlay-hidden">
+    <div id="cartPopup" class="cart-popup">
+      <button id="closeCartBtn" class="close-btn">&times;</button>
+
+      <h3 id="cart-modal-title">Seu Pedido</h3>
+
+      <!-- área que exibe pizza selecionada quando aberto via "Pedir agora" -->
+      <div id="selected-product" class="selected-product" style="display:none;">
+        <strong id="selected-name"></strong>
+        <p id="selected-desc" class="descricao-pequena"></p>
+
+        <div id="modal-tamanhos" class="modal-tamanhos"></div>
+
+        <div class="modal-quantidade">
+          <button id="qty-decrease" class="qty-btn">−</button>
+          <span id="qty-value">1</span>
+          <button id="qty-increase" class="qty-btn">+</button>
+        </div>
+
+        <div class="modal-actions">
+          <button id="modal-add-btn" class="confirmar">Adicionar ao carrinho</button>
+        </div>
+
+        <hr />
+      </div>
+
+      <!-- LISTA DE ITENS DO CARRINHO -->
+      <ul id="cart-items" class="cart-items"></ul>
+
+      <div class="cart-footer">
+        <div class="cart-total">Total: <span id="cart-total">R$0,00</span></div>
+        <div class="cart-buttons">
+          <button id="clearCartBtn" class="clear-btn">Limpar carrinho</button>
+          <button id="checkoutBtn" class="confirmar">Finalizar pedido (WhatsApp)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- toast discreto -->
+  <div id="toast" class="toast-hidden">Adicionado ao carrinho!</div>
+
+  <script src="gpt.js"></script>
+</body>
+</html>
