@@ -347,6 +347,7 @@
     loginOverlay.addEventListener("click", (e) => { if (e.target === loginOverlay) hideLogin(); });
     if (loginPopup) loginPopup.addEventListener("click", e => e.stopPropagation());
 
+   
     if (loginForm) {
       loginForm.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -365,3 +366,4 @@
   });
 
 })();
+

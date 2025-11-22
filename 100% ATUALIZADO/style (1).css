@@ -39,6 +39,8 @@ body
     background-color: #1f1f1f;
     position: fixed;
     z-index: 10;
+    padding: 30px;
+    gap: 15px;
 }
 
 .logo {
@@ -47,6 +49,7 @@ body
     cursor: pointer;
     display: flex;
     align-items: center;
+    gap: 10px;
 }
 
 .logo h3 {
@@ -77,6 +80,7 @@ nav .list-menu {
     font-weight: 500;
     transition: all 200ms ease-in;
 }
+
 
 .content .list-menu li a:hover {
     background-color: #333333;
@@ -186,7 +190,7 @@ nav .list-menu {
 .sobre-nos .main {
     width: 80%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;  /*centralizar o conteudo*/
     align-items: center;
 }
 
@@ -286,6 +290,7 @@ nav .list-menu {
 .itens-cardapio .produto {
     background-color: #5e5252;
     border-radius: 10px;
+    padding: 12px;
     box-shadow: 0px 0px 8px 1px #000000a1;
     overflow: hidden;
     display: flex;
@@ -643,7 +648,7 @@ footer {
     }
 
 
-/* Botão Finalizar Pedido */
+/* Botão Finalizar Pedido Link para o Whats */
 .confirmar{
     padding: 8px 16px;        /* diminui tamanho */
     font-size: 14px;          /* fonte menor */
@@ -664,54 +669,6 @@ footer {
 
 
 
-/* header */
-.content {
-     display:flex; 
-     align-items:center;
-      justify-content:space-between;
-       gap:12px;
-       padding:12px 6px;
-     }
-
-
-.logo { 
-    display:flex;
-     align-items:center; 
-     gap:10px; 
-    
-    }
-
-.logo img { 
-    width:48px; 
-    height:48px; 
-    object-fit:cover;
-
-}
-.list-menu { 
-    list-style:none;
-     display:flex; 
-     gap:12px; 
-     align-items:center; 
-    
-    }
-
-.list-menu a { 
-    text-decoration:none; 
-    color:inherit;
-     padding:6px; 
-     display:inline-flex; 
-     align-items:center; 
-     gap:6px; 
-    
-    }
-
-
-
-.cart-tdn { 
-    font-size:20px;
-
-}
-
 #cart-badge { 
     background:#e74c3c; 
     color:#fff; 
@@ -721,39 +678,21 @@ footer {
     margin-left:6px; 
 }
 
-/* seção principal */
-.first-section .conteudo-principal { 
-    
-    padding: 18px 6px; 
 
-}
 
 /* produtos grid */
-.itens-cardapio { 
-    display:grid; 
-    grid-template-columns:
-     repeat(auto-fit, minmax(240px, 1fr)); 
-     gap:16px; 
-     margin-top:12px;
-    
-    }
-.produto { 
-    background:#fff; 
-    border-radius:10px;
-     padding:12px;
-      box-shadow:0 6px 20px rgba(0,0,0,0.06);
-       display:flex; 
-       gap:12px;
-        align-items:flex-start; 
-    }
+
 
 /* botoes de tamanho (quick buy) */
 .tamanhos 
 { display:flex;
   gap:8px; 
-  flex-wrap:wrap; 
+  flex-direction: column;
   margin-bottom:8px; 
-  justify-content: center; }
+  justify-content: center; 
+    width: 90%;
+    padding: 40px;
+}
 
 .tamanho-btn {  /*botao onde esta localizado as fatias e o preço*/
   border:1px solid #ddd;
