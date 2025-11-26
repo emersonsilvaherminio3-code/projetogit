@@ -939,3 +939,28 @@ footer {
     
     }
 }
+
+.login-screen,
+.register-screen {
+  transition: 0.2s ease;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.active {
+  display: block !important;
+}
+
+.toggle-screen {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.toggle-screen a {
+  color: #ff4500;
+  font-weight: bold;
+  cursor: pointer;
+}

@@ -4,14 +4,16 @@
     permite escolher tamanho e quantidade, adicionar ao carrinho
   - carrinho persistente em localStorage (key: "carrinho")
   - remover / ajustar qty no modal, finalizar pedido via WhatsApp
+  - login/cadastro simples via localStorage (clientesCadastrados, usuarioAtivo)
   - número WhatsApp: 55 81 9964 1479 => "5581999641479"
 */
 
 (function () {
-  // CONFIG
+  /* =================== CONFIG / DOM (CARRINHO) =================== */
   const STORAGE_KEY = "carrinho";
-  const WHATSAPP_NUMBER = "5581999641479"; // formato internacional sem +
-  // DOM
+  const WHATSAPP_NUMBER = "5581999641479";
+
+  // Cart DOM
   const openCartBtn = document.getElementById("openCartBtn");
   const cartOverlay = document.getElementById("cartOverlay");
   const cartPopup = document.getElementById("cartPopup");
@@ -23,7 +25,7 @@
   const cartBadge = document.getElementById("cart-badge");
   const toast = document.getElementById("toast");
 
-  // modal selected product elements
+  // Modal selected product elements
   const selectedProductEl = document.getElementById("selected-product");
   const selectedNameEl = document.getElementById("selected-name");
   const selectedDescEl = document.getElementById("selected-desc");
@@ -34,32 +36,33 @@
   const modalAddBtn = document.getElementById("modal-add-btn");
   const cartModalTitle = document.getElementById("cart-modal-title");
 
-  // state
+  /* =================== STATE (CARRINHO) =================== */
   let cart = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-  let modalSelected = null; // { name, desc, sizes: [{size, price}], chosenSize, qty }
+  let modalSelected = null;
 
-  // util
+  /* =================== HELPERS (CARRINHO) =================== */
   function saveCart() { localStorage.setItem(STORAGE_KEY, JSON.stringify(cart)); }
   function formatBRL(n) {
     return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
   }
   function showToast(message = "Adicionado ao carrinho!") {
+    if (!toast) return;
     toast.textContent = message;
     toast.classList.add("toast-show");
     setTimeout(() => toast.classList.remove("toast-show"), 1500);
   }
   function updateBadge() {
+    if (!cartBadge) return;
     const totalQty = cart.reduce((s, it) => s + it.quantity, 0);
     cartBadge.textContent = totalQty;
   }
 
-  // read sizes from a .produto's .tamanhos buttons
+  /* =================== CARRINHO: leitura de tamanhos e quick add =================== */
   function buildSizesFromProduct(prodElem) {
     const btns = Array.from(prodElem.querySelectorAll(".tamanho-btn"));
     return btns.map(b => ({ size: b.dataset.size, price: parseFloat(b.dataset.price) }));
   }
 
-  // quick add: when clicking a tamanho button inside product card
   document.body.addEventListener("click", function (e) {
     const tb = e.target.closest(".tamanho-btn");
     if (!tb) return;
@@ -74,7 +77,6 @@
     showToast();
   });
 
-  // "Pedir agora" opens modal with selected product preloaded (not yet added)
   document.body.addEventListener("click", function (e) {
     const pb = e.target.closest(".pedir-btn");
     if (!pb) return;
@@ -89,26 +91,27 @@
     openCartModal(true);
   });
 
-  // open cart via header button (no selected product)
-  openCartBtn.addEventListener("click", function (ev) {
-    ev.preventDefault();
-    modalSelected = null; // open without preselected product
-    openCartModal(false);
-  });
+  /* =================== MODAL DO CARRINHO =================== */
+  if (openCartBtn) {
+    openCartBtn.addEventListener("click", function (ev) {
+      ev.preventDefault();
+      modalSelected = null;
+      openCartModal(false);
+    });
+  }
 
   function openCartModal(withSelected) {
+    if (!cartOverlay) return;
     cartOverlay.classList.remove("overlay-hidden");
     cartOverlay.classList.add("overlay-active");
     document.body.classList.add("popup-open");
 
-    // render selected product area
     if (withSelected && modalSelected) {
       selectedProductEl.style.display = "block";
       selectedNameEl.textContent = modalSelected.name;
       selectedDescEl.textContent = modalSelected.desc || "";
       qtyValueEl.textContent = modalSelected.qty;
 
-      // build sizes buttons
       modalTamanhosEl.innerHTML = "";
       modalSelected.sizes.forEach(sz => {
         const b = document.createElement("button");
@@ -117,18 +120,16 @@
         b.dataset.price = sz.price;
         b.textContent = `${sz.size} — ${formatBRL(sz.price)}`;
         b.addEventListener("click", () => {
-          // toggle active
           Array.from(modalTamanhosEl.children).forEach(x => x.classList.remove("active"));
           b.classList.add("active");
           modalSelected.chosenSize = sz;
-          updateModalPrice();
         });
         modalTamanhosEl.appendChild(b);
       });
+
       cartModalTitle.textContent = `Pedido — ${modalSelected.name}`;
     } else {
-      // hide selected product area
-      selectedProductEl.style.display = "none";
+      if (selectedProductEl) selectedProductEl.style.display = "none";
       cartModalTitle.textContent = "Seu Carrinho";
     }
 
@@ -136,61 +137,52 @@
     updateBadge();
   }
 
-  // close handlers
-  closeCartBtn.addEventListener("click", closeCartModal);
-  cartOverlay.addEventListener("click", function (e) {
+  if (closeCartBtn) closeCartBtn.addEventListener("click", closeCartModal);
+  if (cartOverlay) cartOverlay.addEventListener("click", function (e) {
     if (e.target === cartOverlay) closeCartModal();
   });
   if (cartPopup) cartPopup.addEventListener("click", e => e.stopPropagation());
 
   function closeCartModal() {
+    if (!cartOverlay) return;
     cartOverlay.classList.remove("overlay-active");
     cartOverlay.classList.add("overlay-hidden");
     document.body.classList.remove("popup-open");
-    // reset modal qty selection
     if (modalSelected) {
       modalSelected.qty = 1;
       modalSelected.chosenSize = null;
     }
   }
 
-  // qty controls in modal
-  qtyDecreaseBtn.addEventListener("click", () => {
+  if (qtyDecreaseBtn) qtyDecreaseBtn.addEventListener("click", () => {
     if (!modalSelected) return;
     if (modalSelected.qty > 1) modalSelected.qty--;
     qtyValueEl.textContent = modalSelected.qty;
-    updateModalPrice();
   });
-  qtyIncreaseBtn.addEventListener("click", () => {
+  if (qtyIncreaseBtn) qtyIncreaseBtn.addEventListener("click", () => {
     if (!modalSelected) return;
     modalSelected.qty++;
     qtyValueEl.textContent = modalSelected.qty;
-    updateModalPrice();
   });
 
-  function updateModalPrice() {
-    // optionally can show live price; currently we keep the UI minimal (you can extend)
-    // we could update a small span showing total for selected product
-  }
-
-  // add from modal button
-  modalAddBtn.addEventListener("click", () => {
+  if (modalAddBtn) modalAddBtn.addEventListener("click", () => {
     if (!modalSelected) return alert("Escolha um tamanho antes de adicionar.");
-
     if (!modalSelected.chosenSize) return alert("Escolha um tamanho antes de adicionar.");
+
     const { name, chosenSize, qty } = modalSelected;
     addToCart({ name, size: chosenSize.size, price: chosenSize.price, quantity: Number(qty) });
     showToast("Adicionado ao carrinho!");
-    // reset modal selected area but keep modal open showing cart
     modalSelected = null;
-    // re-render will hide selected product area
     openCartModal(false);
   });
 
-  // CART operations
+  /* =================== CARRINHO: operações =================== */
   function addToCart(item) {
-    // item: { name, size, price, quantity }
-    const existing = cart.find(it => it.name === item.name && String(it.size) === String(item.size) && Number(it.price) === Number(item.price));
+    const existing = cart.find(it =>
+      it.name === item.name &&
+      String(it.size) === String(item.size) &&
+      Number(it.price) === Number(item.price)
+    );
     if (existing) {
       existing.quantity = Number(existing.quantity) + Number(item.quantity);
     } else {
@@ -208,13 +200,14 @@
   }
 
   function renderCartItems() {
+    if (!cartItemsEl) return;
     cartItemsEl.innerHTML = "";
     if (!cart.length) {
       const li = document.createElement("li");
       li.textContent = "Seu carrinho está vazio.";
       li.style.padding = "8px";
       cartItemsEl.appendChild(li);
-      cartTotalEl.textContent = formatBRL(0);
+      if (cartTotalEl) cartTotalEl.textContent = formatBRL(0);
       return;
     }
 
@@ -224,19 +217,21 @@
 
       const left = document.createElement("div");
       left.className = "item-left";
-      left.innerHTML = `<strong>${it.name}</strong><small>${it.size}</small><small>${formatBRL(it.price)} un.</small>`;
+      left.innerHTML = `
+        <strong>${it.name}</strong>
+        <small>${it.size}</small>
+        <small>${formatBRL(it.price)} un.</small>
+      `;
 
       const right = document.createElement("div");
       right.className = "item-right";
+
       const dec = document.createElement("button");
       dec.className = "qty-btn";
       dec.textContent = "−";
       dec.addEventListener("click", () => {
         if (it.quantity > 1) it.quantity--;
-        else {
-          // remove
-          cart.splice(idx, 1);
-        }
+        else cart.splice(idx, 1);
         saveCart();
         renderCartItems();
         updateBadge();
@@ -282,13 +277,11 @@
       cartItemsEl.appendChild(li);
     });
 
-    // total
     const total = cart.reduce((s, it) => s + it.price * it.quantity, 0);
-    cartTotalEl.textContent = formatBRL(total);
+    if (cartTotalEl) cartTotalEl.textContent = formatBRL(total);
   }
 
-  // clear cart
-  clearCartBtn.addEventListener("click", () => {
+  if (clearCartBtn) clearCartBtn.addEventListener("click", () => {
     if (!cart.length) return;
     if (!confirm("Deseja limpar todo o carrinho?")) return;
     cart = [];
@@ -297,8 +290,7 @@
     updateBadge();
   });
 
-  // checkout -> WhatsApp
-  checkoutBtn.addEventListener("click", () => {
+  if (checkoutBtn) checkoutBtn.addEventListener("click", () => {
     if (!cart.length) { alert("Seu carrinho está vazio!"); return; }
 
     let message = "Olá! Gostaria de fazer o pedido:%0A%0A";
@@ -307,63 +299,307 @@
     });
     const total = cart.reduce((s, it) => s + it.price * it.quantity, 0);
     message += `%0ATotal: R$ ${total.toFixed(2).replace(".", ",")}%0A%0A`;
-    message += "Endereço: %0A";
-    message += "%0AForma de pagamento: %0A";
+    message += "Endereço: %0A%0AForma de pagamento: %0A";
 
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
     window.open(url, "_blank");
   });
 
-  // initialize
   function init() {
     renderCartItems();
     updateBadge();
   }
   init();
 
-  // login modal code (kept simple and robust)
-  document.addEventListener("DOMContentLoaded", function () {
-    const openLoginBtn = document.getElementById("openLoginBtn");
-    const loginOverlay = document.getElementById("loginOverlay");
-    const closeLoginBtn = document.getElementById("closeLoginBtn");
-    const loginPopup = document.getElementById("loginPopup");
-    const loginForm = document.getElementById("loginForm");
+  /* =================== LOGIN / CADASTRO (NOVO BLOCO) =================== */
 
-    if (!loginOverlay) return;
+  // DOM do login (existem no seu HTML)
+  const openLoginBtn = document.getElementById("openLoginBtn");
+  const loginOverlay = document.getElementById("loginOverlay");
+  const loginPopup = document.getElementById("loginPopup");
+  const closeLoginBtn = document.getElementById("closeLoginBtn");
+  const loginForm = document.getElementById("loginForm");
 
-    function showLogin() {
+  // inputs
+  const inputNome = loginForm ? loginForm.querySelector("[name='nome']") : null;
+  const inputTelefone = loginForm ? loginForm.querySelector("[name='telefone']") : null;
+  const inputCpf = loginForm ? loginForm.querySelector("[name='cpf']") : null;
+  const inputEndereco = loginForm ? loginForm.querySelector("[name='endereco']") : null;
+
+  // keys localStorage
+  const CLIENTES_KEY = "clientesCadastrados";
+  const ATIVO_KEY = "usuarioAtivo";
+
+  // modo atual do modal: 'login' ou 'cadastro'
+  let loginMode = "login";
+
+  // safety: se o modal não existir, não executamos nada do bloco de login
+  if (loginOverlay && loginForm) {
+    /* ---------- funções utilitárias do login ---------- */
+
+    // Mostra o overlay
+    function showLoginOverlay() {
       loginOverlay.classList.remove("overlay-hidden");
       loginOverlay.classList.add("overlay-active");
       document.body.classList.add("popup-open");
     }
-    function hideLogin() {
+    // Esconde o overlay
+    function hideLoginOverlay() {
       loginOverlay.classList.remove("overlay-active");
       loginOverlay.classList.add("overlay-hidden");
       document.body.classList.remove("popup-open");
     }
 
-    if (openLoginBtn) openLoginBtn.addEventListener("click", (e) => { e.preventDefault(); showLogin(); });
-    if (closeLoginBtn) closeLoginBtn.addEventListener("click", hideLogin);
-    loginOverlay.addEventListener("click", (e) => { if (e.target === loginOverlay) hideLogin(); });
-    if (loginPopup) loginPopup.addEventListener("click", e => e.stopPropagation());
+    // recupera lista de clientes do localStorage
+    function getClientes() {
+      const raw = localStorage.getItem(CLIENTES_KEY);
+      return raw ? JSON.parse(raw) : [];
+    }
+    // salva lista de clientes no localStorage
+    function setClientes(list) {
+      localStorage.setItem(CLIENTES_KEY, JSON.stringify(list));
+    }
 
-   
-    if (loginForm) {
-      loginForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const data = Object.fromEntries(new FormData(loginForm).entries());
-        if (!data.nome || !data.telefone) { alert("Preencha nome e telefone."); return; }
-        const key = "clientesCadastrados";
-        const existingJSON = localStorage.getItem(key);
-        const lista = existingJSON ? JSON.parse(existingJSON) : [];
-        lista.push(data);
-        localStorage.setItem(key, JSON.stringify(lista));
-        alert("Cadastro salvo com sucesso!");
-        hideLogin();
-        loginForm.reset();
+    // grava usuario ativo (após login ou cadastro)
+    function setUsuarioAtivo(obj) {
+      localStorage.setItem(ATIVO_KEY, JSON.stringify(obj));
+      // atualiza label do botão login no header para mostrar nome reduzido
+      if (openLoginBtn) {
+        const short = obj && obj.nome ? obj.nome.split(" ")[0] : "Entrar";
+        openLoginBtn.textContent = short;
+      }
+    }
+    function getUsuarioAtivo() {
+      const r = localStorage.getItem(ATIVO_KEY);
+      return r ? JSON.parse(r) : null;
+    }
+    function clearUsuarioAtivo() {
+      localStorage.removeItem(ATIVO_KEY);
+      if (openLoginBtn) openLoginBtn.textContent = "LOGIN";
+    }
+
+    // Toggle UI para mostrar modo (login / cadastro)
+    function renderLoginUI(mode) {
+      loginMode = mode;
+      // formulário tem grupos .form-group — vamos esconder os que não interessam
+      const nomeGroup = inputNome ? inputNome.closest(".form-group") : null;
+      const enderecoGroup = inputEndereco ? inputEndereco.closest(".form-group") : null;
+      const telefoneGroup = inputTelefone ? inputTelefone.closest(".form-group") : null;
+      const cpfGroup = inputCpf ? inputCpf.closest(".form-group") : null;
+
+      // header text
+      const titleEl = loginPopup.querySelector("h3");
+      if (titleEl) titleEl.textContent = mode === "login" ? "Entrar" : "Cadastrar";
+
+      // submit button
+      const submitBtn = loginForm.querySelector("button[type='submit']");
+      if (submitBtn) submitBtn.textContent = mode === "login" ? "Entrar" : "Cadastrar";
+
+      // For login mode: show telefone + cpf; hide nome + endereco
+      if (mode === "login") {
+        if (nomeGroup) nomeGroup.style.display = "none";
+        if (enderecoGroup) enderecoGroup.style.display = "none";
+        if (telefoneGroup) telefoneGroup.style.display = "";
+        if (cpfGroup) cpfGroup.style.display = "";
+        // add small switch link
+        ensureSwitcher();
+      } else {
+        // cadastro mode: show all (nome, telefone, cpf) - endereco optional
+        if (nomeGroup) nomeGroup.style.display = "";
+        if (enderecoGroup) enderecoGroup.style.display = "";
+        if (telefoneGroup) telefoneGroup.style.display = "";
+        if (cpfGroup) cpfGroup.style.display = "";
+        ensureSwitcher();
+      }
+    }
+
+    // adiciona link para alternar entre Entrar / Cadastrar (apenas uma vez)
+    function ensureSwitcher() {
+      let sw = loginPopup.querySelector(".login-switcher");
+      if (sw) return;
+      sw = document.createElement("div");
+      sw.className = "login-switcher";
+      sw.style.marginTop = "10px";
+      sw.style.textAlign = "center";
+      sw.style.fontSize = "1.2rem";
+
+      const link = document.createElement("a");
+      link.href = "#";
+      link.style.cursor = "pointer";
+      link.style.color = "#0066cc";
+      link.style.textDecoration = "underline";
+
+      sw.appendChild(link);
+      loginPopup.appendChild(sw);
+
+      link.addEventListener("click", (ev) => {
+        ev.preventDefault();
+        if (loginMode === "login") renderLoginUI("cadastro");
+        else renderLoginUI("login");
+      });
+
+      // atualiza texto dinamicamente (quando chamado)
+      function updateText() {
+        link.textContent = loginMode === "login" ? "Ainda não tem conta? Cadastre-se" : "Já tem conta? Entrar";
+      }
+      // observe loginMode via small interval update (lightweight)
+      const obs = setInterval(() => {
+        if (!document.contains(sw)) { clearInterval(obs); return; }
+        updateText();
+      }, 120);
+    }
+
+    // valida e faz login (modo 'login')
+    function handleLoginSubmit(formData) {
+      const cpf = (formData.get("cpf") || "").toString().trim();
+      const telefone = (formData.get("telefone") || "").toString().trim();
+      if (!cpf || !telefone) { alert("Preencha CPF e telefone."); return false; }
+
+      const clientes = getClientes();
+      const matched = clientes.find(c =>
+        (c.cpf && c.cpf.replace(/\D/g, "") === cpf.replace(/\D/g, "")) &&
+        (c.telefone && c.telefone.replace(/\D/g, "") === telefone.replace(/\D/g, ""))
+      );
+
+      if (matched) {
+        // login bem-sucedido
+        setUsuarioAtivo(matched);
+        alert(`Bem-vindo de volta, ${matched.nome.split(" ")[0]}!`);
+        hideLoginOverlay();
+        return true;
+      } else {
+        // não encontrado
+        const goRegister = confirm("Conta não encontrada. Deseja se cadastrar?");
+        if (goRegister) {
+          renderLoginUI("cadastro");
+        }
+        return false;
+      }
+    }
+
+    // valida e cadastra novo cliente (modo 'cadastro')
+    function handleCadastroSubmit(formData) {
+      const nome = (formData.get("nome") || "").toString().trim();
+      const cpf = (formData.get("cpf") || "").toString().trim();
+      const telefone = (formData.get("telefone") || "").toString().trim();
+      const endereco = (formData.get("endereco") || "").toString().trim();
+
+      if (!nome || !cpf || !telefone) { alert("Preencha nome, CPF e telefone."); return false; }
+
+      const clientes = getClientes();
+
+      // evitar duplicado exato por cpf
+      const already = clientes.find(c => c.cpf && c.cpf.replace(/\D/g, "") === cpf.replace(/\D/g, ""));
+      if (already) {
+        const ok = confirm("Já existe um cadastro com esse CPF. Deseja entrar com esse cadastro?");
+        if (ok) {
+          setUsuarioAtivo(already);
+          alert(`Bem-vindo, ${already.nome.split(" ")[0]}!`);
+          hideLoginOverlay();
+          return true;
+        } else {
+          return false;
+        }
+      }
+
+      const novo = { nome, cpf, telefone, endereco, criadoEm: new Date().toISOString() };
+      clientes.push(novo);
+      setClientes(clientes);
+      setUsuarioAtivo(novo);
+      alert("Cadastro realizado com sucesso!");
+      hideLoginOverlay();
+      return true;
+    }
+
+    /* ---------- comportamento do formulário ---------- */
+
+    // Ao submeter o formulário — decide entre login ou cadastro
+    loginForm.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      const fd = new FormData(loginForm);
+
+      if (loginMode === "login") {
+        handleLoginSubmit(fd);
+      } else {
+        handleCadastroSubmit(fd);
+      }
+      // não resetamos automaticamente aqui (o modal fecha em caso de sucesso)
+    });
+
+    // Quando abrir o modal: comportamento do botão openLoginBtn
+    if (openLoginBtn) {
+      openLoginBtn.addEventListener("click", function (ev) {
+        ev.preventDefault();
+        // se já tem usuario ativo: mostra info e modo 'login' com fields preenchidos
+        const ativo = getUsuarioAtivo();
+        renderLoginUI("login");
+        if (ativo) {
+          // preenche telefone/cpf para facilitar logout/visualização
+          if (inputTelefone) inputTelefone.value = ativo.telefone || "";
+          if (inputCpf) inputCpf.value = ativo.cpf || "";
+        } else {
+          // limpa campos para novo login
+          if (inputNome) inputNome.value = "";
+          if (inputTelefone) inputTelefone.value = "";
+          if (inputCpf) inputCpf.value = "";
+          if (inputEndereco) inputEndereco.value = "";
+        }
+        showLoginOverlay();
       });
     }
-  });
 
-})();
+    // Fechar modal
+    if (closeLoginBtn) closeLoginBtn.addEventListener("click", function (ev) {
+      ev.preventDefault();
+      hideLoginOverlay();
+    });
+    loginOverlay.addEventListener("click", function (e) {
+      if (e.target === loginOverlay) hideLoginOverlay();
+    });
+    if (loginPopup) loginPopup.addEventListener("click", e => e.stopPropagation());
 
+    // Ativa auto-salvamento rápido (último typed) para conforto: guarda em "ultimoLoginTemp"
+    loginForm.addEventListener("input", () => {
+      try {
+        const data = Object.fromEntries(new FormData(loginForm).entries());
+        localStorage.setItem("ultimoLoginTemp", JSON.stringify(data));
+      } catch (err) { /* ignore */ }
+    });
+
+    // Ao carregar a página, tenta preencher campos com "usuarioAtivo" ou "ultimoLoginTemp"
+    document.addEventListener("DOMContentLoaded", () => {
+      const ativo = getUsuarioAtivo();
+      if (ativo) {
+        if (inputNome) inputNome.value = ativo.nome || "";
+        if (inputTelefone) inputTelefone.value = ativo.telefone || "";
+        if (inputCpf) inputCpf.value = ativo.cpf || "";
+        if (inputEndereco) inputEndereco.value = ativo.endereco || "";
+        // atualiza botão
+        if (openLoginBtn && ativo.nome) openLoginBtn.textContent = ativo.nome.split(" ")[0];
+      } else {
+        const tmp = localStorage.getItem("ultimoLoginTemp");
+        if (tmp) {
+          try {
+            const parsed = JSON.parse(tmp);
+            if (inputNome && parsed.nome) inputNome.value = parsed.nome;
+            if (inputTelefone && parsed.telefone) inputTelefone.value = parsed.telefone;
+            if (inputCpf && parsed.cpf) inputCpf.value = parsed.cpf;
+            if (inputEndereco && parsed.endereco) inputEndereco.value = parsed.endereco;
+          } catch (err) { /* ignore parse */ }
+        }
+      }
+    });
+
+    // Expor função de logout rápida (pode ser chamada do console ou futuro botão)
+    window.tdnLogout = function () {
+      clearUsuarioAtivo();
+      alert("Desconectado.");
+    };
+
+    // Inicializa a UI do modal em modo login
+    renderLoginUI("login");
+  } // fim bloco login existente
+
+  /* =================== FIM BLOCO =================== */
+
+})(); // fim IIFE
