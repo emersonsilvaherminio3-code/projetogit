@@ -148,6 +148,7 @@
     cartOverlay.classList.remove("overlay-active");
     cartOverlay.classList.add("overlay-hidden");
     document.body.classList.remove("popup-open");
+    
     if (modalSelected) {
       modalSelected.qty = 1;
       modalSelected.chosenSize = null;
@@ -311,295 +312,293 @@
   }
   init();
 
-  /* =================== LOGIN / CADASTRO (NOVO BLOCO) =================== */
+// =========================
+// ELEMENTOS
+// =========================
+const openLoginBtn = document.getElementById("openLoginBtn");
+const loginOverlay = document.getElementById("loginOverlay");
+const closeLoginBtn = document.getElementById("closeLoginBtn");
 
-  // DOM do login (existem no seu HTML)
-  const openLoginBtn = document.getElementById("openLoginBtn");
-  const loginOverlay = document.getElementById("loginOverlay");
-  const loginPopup = document.getElementById("loginPopup");
-  const closeLoginBtn = document.getElementById("closeLoginBtn");
-  const loginForm = document.getElementById("loginForm");
+const loginForm = document.getElementById("loginForm");
+const registerForm = document.getElementById("registerForm");
+const profileScreen = document.getElementById("profileScreen");
 
-  // inputs
-  const inputNome = loginForm ? loginForm.querySelector("[name='nome']") : null;
-  const inputTelefone = loginForm ? loginForm.querySelector("[name='telefone']") : null;
-  const inputCpf = loginForm ? loginForm.querySelector("[name='cpf']") : null;
-  const inputEndereco = loginForm ? loginForm.querySelector("[name='endereco']") : null;
+const goToRegister = document.getElementById("goToRegister");
+const goToLogin = document.getElementById("goToLogin");
+const goToLoginFromProfile = document.getElementById("goToLoginFromProfile");
 
-  // keys localStorage
-  const CLIENTES_KEY = "clientesCadastrados";
-  const ATIVO_KEY = "usuarioAtivo";
+const btnLogout = document.getElementById("btnLogout");
 
-  // modo atual do modal: 'login' ou 'cadastro'
-  let loginMode = "login";
+// Campos login
+const loginCpf = document.getElementById("loginCpf");
+const loginPassword = document.getElementById("loginPassword");
 
-  // safety: se o modal não existir, não executamos nada do bloco de login
-  if (loginOverlay && loginForm) {
-    /* ---------- funções utilitárias do login ---------- */
+// Campos cadastro
+const regNome = document.getElementById("regNome");
+const regCpf = document.getElementById("regCpf");
+const regTel = document.getElementById("regTel");
+const regPassword = document.getElementById("regPassword");
+const regPasswordConfirm = document.getElementById("regPasswordConfirm");
 
-    // Mostra o overlay
-    function showLoginOverlay() {
-      loginOverlay.classList.remove("overlay-hidden");
-      loginOverlay.classList.add("overlay-active");
-      document.body.classList.add("popup-open");
-    }
-    // Esconde o overlay
-    function hideLoginOverlay() {
-      loginOverlay.classList.remove("overlay-active");
-      loginOverlay.classList.add("overlay-hidden");
-      document.body.classList.remove("popup-open");
-    }
+// Campos perfil
+const profileNome = document.getElementById("profileNome");
+const profileCpf = document.getElementById("profileCpf");
+const profileTel = document.getElementById("profileTel");
 
-    // recupera lista de clientes do localStorage
-    function getClientes() {
-      const raw = localStorage.getItem(CLIENTES_KEY);
-      return raw ? JSON.parse(raw) : [];
-    }
-    // salva lista de clientes no localStorage
-    function setClientes(list) {
-      localStorage.setItem(CLIENTES_KEY, JSON.stringify(list));
-    }
+// =========================
+// FUNÇÕES ÚTEIS
+// =========================
+function maskCPF(v) {
+  v = v.replace(/\D/g, "");
+  return v.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+}
 
-    // grava usuario ativo (após login ou cadastro)
-    function setUsuarioAtivo(obj) {
-      localStorage.setItem(ATIVO_KEY, JSON.stringify(obj));
-      // atualiza label do botão login no header para mostrar nome reduzido
-      if (openLoginBtn) {
-        const short = obj && obj.nome ? obj.nome.split(" ")[0] : "Entrar";
-        openLoginBtn.textContent = short;
-      }
-    }
-    function getUsuarioAtivo() {
-      const r = localStorage.getItem(ATIVO_KEY);
-      return r ? JSON.parse(r) : null;
-    }
-    function clearUsuarioAtivo() {
-      localStorage.removeItem(ATIVO_KEY);
-      if (openLoginBtn) openLoginBtn.textContent = "LOGIN";
-    }
+function maskPhone(v) {
+  v = v.replace(/\D/g, "");
+  return v.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+}
 
-    // Toggle UI para mostrar modo (login / cadastro)
-    function renderLoginUI(mode) {
-      loginMode = mode;
-      // formulário tem grupos .form-group — vamos esconder os que não interessam
-      const nomeGroup = inputNome ? inputNome.closest(".form-group") : null;
-      const enderecoGroup = inputEndereco ? inputEndereco.closest(".form-group") : null;
-      const telefoneGroup = inputTelefone ? inputTelefone.closest(".form-group") : null;
-      const cpfGroup = inputCpf ? inputCpf.closest(".form-group") : null;
+function validarCPF(cpf) {
+  cpf = cpf.replace(/\D/g, "");
+  if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
 
-      // header text
-      const titleEl = loginPopup.querySelector("h3");
-      if (titleEl) titleEl.textContent = mode === "login" ? "Entrar" : "Cadastrar";
+  let soma = 0;
+  for (let i = 0; i < 9; i++) soma += parseInt(cpf[i]) * (10 - i);
+  let resto = (soma * 10) % 11;
+  if (resto === 10) resto = 0;
+  if (resto !== parseInt(cpf[9])) return false;
 
-      // submit button
-      const submitBtn = loginForm.querySelector("button[type='submit']");
-      if (submitBtn) submitBtn.textContent = mode === "login" ? "Entrar" : "Cadastrar";
+  soma = 0;
+  for (let i = 0; i < 10; i++) soma += parseInt(cpf[i]) * (11 - i);
+  resto = (soma * 10) % 11;
+  if (resto === 10) resto = 0;
 
-      // For login mode: show telefone + cpf; hide nome + endereco
-      if (mode === "login") {
-        if (nomeGroup) nomeGroup.style.display = "none";
-        if (enderecoGroup) enderecoGroup.style.display = "none";
-        if (telefoneGroup) telefoneGroup.style.display = "";
-        if (cpfGroup) cpfGroup.style.display = "";
-        // add small switch link
-        ensureSwitcher();
-      } else {
-        // cadastro mode: show all (nome, telefone, cpf) - endereco optional
-        if (nomeGroup) nomeGroup.style.display = "";
-        if (enderecoGroup) enderecoGroup.style.display = "";
-        if (telefoneGroup) telefoneGroup.style.display = "";
-        if (cpfGroup) cpfGroup.style.display = "";
-        ensureSwitcher();
-      }
-    }
+  return resto === parseInt(cpf[10]);
+}
 
-    // adiciona link para alternar entre Entrar / Cadastrar (apenas uma vez)
-    function ensureSwitcher() {
-      let sw = loginPopup.querySelector(".login-switcher");
-      if (sw) return;
-      sw = document.createElement("div");
-      sw.className = "login-switcher";
-      sw.style.marginTop = "10px";
-      sw.style.textAlign = "center";
-      sw.style.fontSize = "1.2rem";
+function getUsers() {
+  return JSON.parse(localStorage.getItem("usuarios") || "[]");
+}
 
-      const link = document.createElement("a");
-      link.href = "#";
-      link.style.cursor = "pointer";
-      link.style.color = "#0066cc";
-      link.style.textDecoration = "underline";
+function saveUsers(users) {
+  localStorage.setItem("usuarios", JSON.stringify(users));
+}
 
-      sw.appendChild(link);
-      loginPopup.appendChild(sw);
+// =========================
+// FUNÇÕES DE TROCA DE TELA (LOGICA CORRIGIDA)
+// Garante que apenas uma tela está 'active' e visível.
+// =========================
+function showLogin() {
+  // Apenas o Login deve estar visível
+  loginForm.classList.remove("hidden");
+  loginForm.classList.add("active");
 
-      link.addEventListener("click", (ev) => {
-        ev.preventDefault();
-        if (loginMode === "login") renderLoginUI("cadastro");
-        else renderLoginUI("login");
-      });
+  registerForm.classList.add("hidden");
+  registerForm.classList.remove("active");
 
-      // atualiza texto dinamicamente (quando chamado)
-      function updateText() {
-        link.textContent = loginMode === "login" ? "Ainda não tem conta? Cadastre-se" : "Já tem conta? Entrar";
-      }
-      // observe loginMode via small interval update (lightweight)
-      const obs = setInterval(() => {
-        if (!document.contains(sw)) { clearInterval(obs); return; }
-        updateText();
-      }, 120);
-    }
+  profileScreen.classList.add("hidden");
+  profileScreen.classList.remove("active");
+}
 
-    // valida e faz login (modo 'login')
-    function handleLoginSubmit(formData) {
-      const cpf = (formData.get("cpf") || "").toString().trim();
-      const telefone = (formData.get("telefone") || "").toString().trim();
-      if (!cpf || !telefone) { alert("Preencha CPF e telefone."); return false; }
+function showRegister() {
+  // Apenas o Cadastro deve estar visível
+  loginForm.classList.add("hidden");
+  loginForm.classList.remove("active");
 
-      const clientes = getClientes();
-      const matched = clientes.find(c =>
-        (c.cpf && c.cpf.replace(/\D/g, "") === cpf.replace(/\D/g, "")) &&
-        (c.telefone && c.telefone.replace(/\D/g, "") === telefone.replace(/\D/g, ""))
-      );
+  registerForm.classList.remove("hidden");
+  registerForm.classList.add("active");
 
-      if (matched) {
-        // login bem-sucedido
-        setUsuarioAtivo(matched);
-        alert(`Bem-vindo de volta, ${matched.nome.split(" ")[0]}!`);
-        hideLoginOverlay();
-        return true;
-      } else {
-        // não encontrado
-        const goRegister = confirm("Conta não encontrada. Deseja se cadastrar?");
-        if (goRegister) {
-          renderLoginUI("cadastro");
-        }
-        return false;
-      }
-    }
+  profileScreen.classList.add("hidden");
+  profileScreen.classList.remove("active");
+}
 
-    // valida e cadastra novo cliente (modo 'cadastro')
-    function handleCadastroSubmit(formData) {
-      const nome = (formData.get("nome") || "").toString().trim();
-      const cpf = (formData.get("cpf") || "").toString().trim();
-      const telefone = (formData.get("telefone") || "").toString().trim();
-      const endereco = (formData.get("endereco") || "").toString().trim();
+function showProfile(user) {
+  // Apenas o Perfil deve estar visível
+  loginForm.classList.add("hidden");
+  loginForm.classList.remove("active");
 
-      if (!nome || !cpf || !telefone) { alert("Preencha nome, CPF e telefone."); return false; }
+  registerForm.classList.add("hidden");
+  registerForm.classList.remove("active");
 
-      const clientes = getClientes();
+  profileNome.textContent = user.nome;
+  profileCpf.textContent = maskCPF(user.cpf);
+  profileTel.textContent = maskPhone(user.telefone);
 
-      // evitar duplicado exato por cpf
-      const already = clientes.find(c => c.cpf && c.cpf.replace(/\D/g, "") === cpf.replace(/\D/g, ""));
-      if (already) {
-        const ok = confirm("Já existe um cadastro com esse CPF. Deseja entrar com esse cadastro?");
-        if (ok) {
-          setUsuarioAtivo(already);
-          alert(`Bem-vindo, ${already.nome.split(" ")[0]}!`);
-          hideLoginOverlay();
-          return true;
-        } else {
-          return false;
-        }
-      }
+  // Botão de editar oculto, se existir
+  const btnEditar = document.getElementById("btnEditarPerfil");
+  if (btnEditar) btnEditar.classList.add("hidden");
 
-      const novo = { nome, cpf, telefone, endereco, criadoEm: new Date().toISOString() };
-      clientes.push(novo);
-      setClientes(clientes);
-      setUsuarioAtivo(novo);
-      alert("Cadastro realizado com sucesso!");
-      hideLoginOverlay();
-      return true;
-    }
+  profileScreen.classList.remove("hidden");
+  profileScreen.classList.add("active");
+}
 
-    /* ---------- comportamento do formulário ---------- */
+// =========================
+// ABRIR / FECHAR MODAL (CORREÇÃO DE SOBREPOSIÇÃO) ✅
+// Esconde e mostra o botão principal.
+// =========================
+openLoginBtn.addEventListener("click", () => {
+  loginOverlay.classList.remove("overlay-hidden");
+  
+  // ✅ CORREÇÃO: Esconde o botão da página principal ao ABRIR o modal
+  openLoginBtn.classList.add("open-btn-hidden"); 
 
-    // Ao submeter o formulário — decide entre login ou cadastro
-    loginForm.addEventListener("submit", function (ev) {
-      ev.preventDefault();
-      const fd = new FormData(loginForm);
+  const user = JSON.parse(localStorage.getItem("logado"));
+  if (user) showProfile(user);
+  else showLogin();
+});
 
-      if (loginMode === "login") {
-        handleLoginSubmit(fd);
-      } else {
-        handleCadastroSubmit(fd);
-      }
-      // não resetamos automaticamente aqui (o modal fecha em caso de sucesso)
-    });
+closeLoginBtn.addEventListener("click", () => {
+  loginOverlay.classList.add("overlay-hidden");
+  
+  // ✅ CORREÇÃO: Mostra o botão novamente ao FECHAR o modal
+  openLoginBtn.classList.remove("open-btn-hidden"); 
+});
 
-    // Quando abrir o modal: comportamento do botão openLoginBtn
-    if (openLoginBtn) {
-      openLoginBtn.addEventListener("click", function (ev) {
-        ev.preventDefault();
-        // se já tem usuario ativo: mostra info e modo 'login' com fields preenchidos
-        const ativo = getUsuarioAtivo();
-        renderLoginUI("login");
-        if (ativo) {
-          // preenche telefone/cpf para facilitar logout/visualização
-          if (inputTelefone) inputTelefone.value = ativo.telefone || "";
-          if (inputCpf) inputCpf.value = ativo.cpf || "";
-        } else {
-          // limpa campos para novo login
-          if (inputNome) inputNome.value = "";
-          if (inputTelefone) inputTelefone.value = "";
-          if (inputCpf) inputCpf.value = "";
-          if (inputEndereco) inputEndereco.value = "";
-        }
-        showLoginOverlay();
-      });
-    }
+// =========================
+// TROCAR TELA
+// =========================
+goToRegister.addEventListener("click", (e) => {
+  e.preventDefault();
+  showRegister();
+});
 
-    // Fechar modal
-    if (closeLoginBtn) closeLoginBtn.addEventListener("click", function (ev) {
-      ev.preventDefault();
-      hideLoginOverlay();
-    });
-    loginOverlay.addEventListener("click", function (e) {
-      if (e.target === loginOverlay) hideLoginOverlay();
-    });
-    if (loginPopup) loginPopup.addEventListener("click", e => e.stopPropagation());
+goToLogin.addEventListener("click", (e) => {
+  e.preventDefault();
+  showLogin();
+});
 
-    // Ativa auto-salvamento rápido (último typed) para conforto: guarda em "ultimoLoginTemp"
-    loginForm.addEventListener("input", () => {
-      try {
-        const data = Object.fromEntries(new FormData(loginForm).entries());
-        localStorage.setItem("ultimoLoginTemp", JSON.stringify(data));
-      } catch (err) { /* ignore */ }
-    });
+goToLoginFromProfile.addEventListener("click", (e) => {
+  e.preventDefault();
+  showLogin();
+});
 
-    // Ao carregar a página, tenta preencher campos com "usuarioAtivo" ou "ultimoLoginTemp"
-    document.addEventListener("DOMContentLoaded", () => {
-      const ativo = getUsuarioAtivo();
-      if (ativo) {
-        if (inputNome) inputNome.value = ativo.nome || "";
-        if (inputTelefone) inputTelefone.value = ativo.telefone || "";
-        if (inputCpf) inputCpf.value = ativo.cpf || "";
-        if (inputEndereco) inputEndereco.value = ativo.endereco || "";
-        // atualiza botão
-        if (openLoginBtn && ativo.nome) openLoginBtn.textContent = ativo.nome.split(" ")[0];
-      } else {
-        const tmp = localStorage.getItem("ultimoLoginTemp");
-        if (tmp) {
-          try {
-            const parsed = JSON.parse(tmp);
-            if (inputNome && parsed.nome) inputNome.value = parsed.nome;
-            if (inputTelefone && parsed.telefone) inputTelefone.value = parsed.telefone;
-            if (inputCpf && parsed.cpf) inputCpf.value = parsed.cpf;
-            if (inputEndereco && parsed.endereco) inputEndereco.value = parsed.endereco;
-          } catch (err) { /* ignore parse */ }
-        }
-      }
-    });
+// =========================
+// LOGIN
+// =========================
+loginForm.addEventListener("submit", (e) => {
+  e.preventDefault();
 
-    // Expor função de logout rápida (pode ser chamada do console ou futuro botão)
-    window.tdnLogout = function () {
-      clearUsuarioAtivo();
-      alert("Desconectado.");
-    };
+  const cpf = loginCpf.value.replace(/\D/g, "");
+  const senha = loginPassword.value;
 
-    // Inicializa a UI do modal em modo login
-    renderLoginUI("login");
-  } // fim bloco login existente
+  if (senha.length < 8) {
+    alert("A senha deve ter no mínimo 8 caracteres!");
+    return;
+  }
 
-  /* =================== FIM BLOCO =================== */
+  const users = getUsers();
+  const user = users.find((u) => u.cpf === cpf);
 
-})(); // fim IIFE
+  if (!user) {
+    alert("Usuário não encontrado! Faça cadastro.");
+    showRegister();
+    return;
+  }
+
+  if (user.senha !== senha) {
+    alert("Senha incorreta!");
+    return;
+  }
+
+  localStorage.setItem("logado", JSON.stringify(user));
+  openLoginBtn.textContent = user.nome.split(" ")[0];
+  showProfile(user);
+});
+
+// =========================
+// CADASTRO
+// =========================
+registerForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const nome = regNome.value.trim();
+  const cpf = regCpf.value.replace(/\D/g, "");
+  const telefone = regTel.value.replace(/\D/g, "");
+  const senha = regPassword.value;
+  const senhaConf = regPasswordConfirm.value;
+
+  if (!validarCPF(cpf)) {
+    alert("CPF inválido!");
+    return;
+  }
+
+  if (senha.length < 8) {
+    alert("A senha deve ter no mínimo 8 caracteres!");
+    return;
+  }
+
+  if (senha !== senhaConf) {
+    alert("As senhas não coincidem!");
+    return;
+  }
+
+  // Validação do telefone: 11 dígitos
+  if (telefone.length !== 11) {
+    alert("O telefone deve ter 11 dígitos!");
+    return;
+  }
+
+  const users = getUsers();
+  if (users.some((u) => u.cpf === cpf)) {
+    alert("Esse CPF já está cadastrado!");
+    return;
+  }
+
+  const novoUser = { nome, cpf, telefone, senha };
+  users.push(novoUser);
+  saveUsers(users);
+
+  localStorage.setItem("logado", JSON.stringify(novoUser));
+  openLoginBtn.textContent = nome.split(" ")[0];
+  showProfile(novoUser);
+});
+
+// =========================
+// LOGOUT (CORREÇÃO DE SOBREPOSIÇÃO) ✅
+// Garante que o botão principal não fique sobreposto após o logout.
+// =========================
+btnLogout.addEventListener("click", () => {
+  localStorage.removeItem("logado");
+  openLoginBtn.textContent = "LOGIN";
+  
+  // ✅ CORREÇÃO: Mostra o botão da página principal novamente
+  openLoginBtn.classList.remove("open-btn-hidden"); 
+  
+  // O modal se fecha e a tela de login (oculta) é preparada para o próximo uso
+  loginOverlay.classList.add("overlay-hidden");
+  showLogin(); 
+});
+
+// =========================
+// MÁSCARAS
+// =========================
+regCpf.addEventListener("input", () => {
+  regCpf.value = maskCPF(regCpf.value);
+});
+loginCpf.addEventListener("input", () => {
+  loginCpf.value = maskCPF(loginCpf.value);
+});
+regTel.addEventListener("input", () => {
+  regTel.value = maskPhone(regTel.value);
+});
+
+// =========================
+// MOSTRAR SENHA NOS INPUTS
+// =========================
+document.querySelectorAll(".show-pass-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const input = document.getElementById(btn.dataset.target);
+    input.type = input.type === "password" ? "text" : "password";
+  });
+});
+
+// =========================
+// CARREGAR USUÁRIO LOGADO
+// =========================
+const userLogado = JSON.parse(localStorage.getItem("logado"));
+if (userLogado) {
+  openLoginBtn.textContent = userLogado.nome.split(" ")[0];
+}
+
+// O código não foi encerrado com '})();' para evitar o erro de escopo anterior.
+})();

@@ -142,8 +142,8 @@ nav .list-menu {
     margin-bottom: 3rem;
 }
 
-.btn button {
-    width: 230px;
+.btn > button {
+    width: 200px;
     height: 60px; /*altura*/
     cursor: pointer;
     text-transform: uppercase;
@@ -169,9 +169,8 @@ nav .list-menu {
 }
 
 .btn {
-    width: 480px;  /*espaçamento entre os botões*/
+    width: 200px;  /*espaçamento entre os botões*/
     display: flex;
-    justify-content: space-between;
     margin-top: 5rem;
     text-transform: uppercase;
 }
@@ -570,7 +569,7 @@ footer {
         font-size: 1.5rem;}
 }
 
-/* estado escondido por padrão (overlay-hidden) */
+/* estado escondido por padrão */
 .overlay-hidden {
   display: none;
 }
@@ -605,16 +604,14 @@ footer {
     position: absolute;
     top: 10px;
     right: 10px;
-    max-width: 40px;
-
-    width: 20px;
-    height: 10px;
+    width: 35px;
+    height: 35px;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #ffe44d;
     color: white;
-    border-radius: 100%;
+    border-radius: 50%;
     border: none;
     font-size: 18px;
     cursor: pointer;
@@ -627,7 +624,7 @@ footer {
 
 /* campos e botão */
 .form-group {
-     margin-bottom: 12px;
+     margin-bottom: 13px;
       display:flex; 
       flex-direction:column; 
     
@@ -640,7 +637,7 @@ footer {
     }
 
 .form-group input 
-{ padding: 8px 10px; 
+{   padding: 8px 10px; 
     border-radius:6px;
      border:1px solid #ccc;
      font-size:1rem; 
@@ -662,7 +659,17 @@ footer {
     margin: 10px auto;
     display: block;
 }
-
+.confirmarlogin{
+    padding: 8px 16px;        
+    font-size: 14px;          
+    border: none;
+    border-radius: 6px;
+    background-color: #fdc200;
+    color: black;
+    cursor: pointer;
+    width: 100%;              
+    display: block;
+}
 .confirmar:hover {
     background-color: #d62828; /*efeito ao passar com o mouse*/
 }
@@ -678,11 +685,6 @@ footer {
     margin-left:6px; 
 }
 
-
-
-/* produtos grid */
-
-
 /* botoes de tamanho (quick buy) */
 .tamanhos 
 { display:flex;
@@ -690,26 +692,26 @@ footer {
   flex-direction: column;
   margin-bottom:8px; 
   justify-content: center; 
-    width: 90%;
-    padding: 40px;
+  width: 90%;
+  padding: 40px;
 }
 
 .tamanho-btn {  /*botao onde esta localizado as fatias e o preço*/
-  border:1px solid #ddd;
+   border:1px solid #ddd;
    background:#fff; 
    padding:8px 10px; 
    border-radius:8px; 
    cursor:pointer; 
    font-weight:700; 
    font-size:13px;
-  transition: transform .08s, 
-  box-shadow .12s, 
-  background .12s;
+   transition: transform .08s, 
+   box-shadow .12s, 
+   background .12s;
 }
 .tamanho-btn:hover { 
-    transform:translateY(-2px);
+     transform:translateY(-2px);
      box-shadow:0 6px 18px rgba(226, 3, 3, 0.08);
-      background:#fff7ea; 
+     background:#fff7ea; 
 
     }
 
@@ -740,7 +742,8 @@ footer {
 /* cart overlay (modal) */
 .overlay-hidden 
 { display:none;
- }
+  
+}
 
 #cartOverlay.overlay-active 
     { display:flex; 
@@ -770,13 +773,13 @@ footer {
 /* fechar */
 .cart-close-btn {
 
-     position:absolute; 
-     right:12px;
+      position:absolute; 
+      right:12px;
       top:10px; 
       border:none; 
       background:none;
-       font-size:22px; 
-       cursor:pointer; 
+      font-size:22px; 
+      cursor:pointer; 
     
     }
 
@@ -789,7 +792,7 @@ footer {
 }
 .modal-tamanhos {
 
-     display:flex;
+      display:flex;
       gap:8px; 
       flex-wrap:wrap; 
       margin:8px 0; 
@@ -797,12 +800,12 @@ footer {
     }
 .modal-tamanhos .modal-size {
 
-  border:1px solid #ddd;
+   border:1px solid #ddd;
    padding:8px 10px;
-    border-radius:8px; 
-    cursor:pointer; 
-    background:#fff;
-     font-weight:700;
+   border-radius:8px; 
+   cursor:pointer; 
+   background:#fff;
+   font-weight:700;
 
 }
 .modal-tamanhos .modal-size.active { 
@@ -864,7 +867,7 @@ footer {
     
     }
 .cart-item {
-     display:flex;
+      display:flex;
       justify-content:space-between; 
       gap:8px; 
       align-items:center; 
@@ -889,8 +892,8 @@ footer {
 
 /* cart footer */
 .cart-footer { 
-    display:flex; 
-    justify-content:space-between;
+     display:flex; 
+     justify-content:space-between;
      align-items:center; 
      margin-top:12px; 
      gap:10px; 
@@ -905,8 +908,8 @@ footer {
 
 /* toast */
 #toast {
-     position:fixed;
-      bottom:18px;
+       position:fixed;
+       bottom:18px;
        left:50%; 
        transform:translateX(-50%); 
        background:#333; 
@@ -940,6 +943,11 @@ footer {
     }
 }
 
+
+.open-btn-hidden {  
+    display: none !important;  /*PARA ESCONDER O BOTÃO DE ABRIR O POPUP*/
+}
+
 .login-screen,
 .register-screen {
   transition: 0.2s ease;
@@ -963,4 +971,115 @@ footer {
   color: #ff4500;
   font-weight: bold;
   cursor: pointer;
+}
+
+#loginTitle {   /* Título "Login" */
+    font-size: 2rem; 
+    color: #333; 
+    text-align: center;
+    margin-bottom: 25px; /* Mais espaçamento para o formulário */
+    font-weight: 700;
+}
+
+ /* Estilo para o wrapper da senha e o botão de mostrar/ocultar senha */
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper input {
+    flex-grow: 1;
+    padding-right: 40px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+.show-pass-btn {            /*OLHINHO DE MOSTRAR SENHA*/
+    all: unset; /* limpa absolutamente tudo */ 
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 22px;
+    height: 22px;
+    font-size: 18px;
+    color: #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none !important;
+    border: none !important;
+}
+.toggle-screen {   /*TEXTO "Não tem conta?"*/
+    margin-top: 15px; 
+    text-align: center;
+    font-size: 15px; 
+    color: #666; /* Cor cinza para o texto principal */
+}
+
+.toggle-screen a {   /*TEXTO do botão cadastra-se*/
+    color: #e26a49d2; 
+    font-weight: bold;
+    text-decoration: none; /* Remove o sublinhado padrão */
+    transition: color 0.2s ease;
+}
+
+.toggle-screen a:hover {  /*EFEITO AO PASSAR O MOUSE NO BOTÃO CADASTRE-SE*/
+    color: #fdc200; /* Um tom ligeiramente diferente no hover */
+    text-decoration: none; /* Adiciona sublinhado no hover */
+}
+
+.profile-screen h4 {  /* Título "Perfil do Usuário" */
+    font-size: 1.8rem;
+    color: #fdc200;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-list {  /*DADOS DO USUÁRIO */
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+    font-size: 1.15rem;
+    color: #312d2d;
+    margin-top: 25px;
+}
+
+.profile-list li {
+    margin-bottom: 12px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee; /* Linha sutil para separar itens */
+    padding: 8px;
+    font-size: 1.4rem;
+}
+
+.profile-list li strong {   /* estilo para os títulos dos dados */
+    color: #222;
+    margin-right: 5px;
+    font-weight: 700;
+}
+
+.profile-list li span{
+    font-weight: 500;
+
+}
+
+.profile-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Espaçamento entre os botões */
+    margin-top: 25px;
+}
+
+
+.profile-actions button {  /*BOTÃO DE LOGOUT*/
+    padding: 10px 18px;
+    font-size: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    background: #fdc200;
 }
