@@ -40,30 +40,32 @@
   let cart = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
   let modalSelected = null;
 
-  /* =================== HELPERS (CARRINHO) =================== */
+  /* =================== HELPERS(FUNÇÕES UTILITARIAS) (CARRINHO) =================== */
   function saveCart() { localStorage.setItem(STORAGE_KEY, JSON.stringify(cart)); }
   function formatBRL(n) {
-    return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });  /*converte número para moeda BRL*/
   }
-  function showToast(message = "Adicionado ao carrinho!") {
+
+  function showToast(message = "Adicionado ao carrinho!") {  /*mostra uma mensagem toast ao adicionar um item ao carrinho*/
     if (!toast) return;
     toast.textContent = message;
     toast.classList.add("toast-show");
     setTimeout(() => toast.classList.remove("toast-show"), 1500);
   }
-  function updateBadge() {
+  function updateBadge() {  /*atualiza a quantidade total de itens no carrinho e tambem no seu icone*/
     if (!cartBadge) return;
     const totalQty = cart.reduce((s, it) => s + it.quantity, 0);
     cartBadge.textContent = totalQty;
   }
 
   /* =================== CARRINHO: leitura de tamanhos e quick add =================== */
+ 
   function buildSizesFromProduct(prodElem) {
-    const btns = Array.from(prodElem.querySelectorAll(".tamanho-btn"));
+    const btns = Array.from(prodElem.querySelectorAll(".tamanho-btn"));             /*ESSA FUNÇÃO PEGA OS DADOS DE TAMANHO E PREÇO DOS PRODUTOS MARCADOS COM TAMANHO-BTN*/
     return btns.map(b => ({ size: b.dataset.size, price: parseFloat(b.dataset.price) }));
   }
 
-  document.body.addEventListener("click", function (e) {
+  document.body.addEventListener("click", function (e) {                  /*ADICIONA ITEM AO CARRINHO AO CLICAR NO BOTÃO DE TAMANHO DENTRO DO CARD DO PRODUTO*/ 
     const tb = e.target.closest(".tamanho-btn");
     if (!tb) return;
     const prod = tb.closest(".produto");
@@ -81,7 +83,7 @@
     const pb = e.target.closest(".pedir-btn");
     if (!pb) return;
     const prod = pb.closest(".produto");
-    if (!prod) return;
+    if (!prod) return;                                                                  /*ADICIONA ITEM AO CARRINHO AO CLICAR NO BOTÃO PEDIR AGORA E CLICANDO NO TAMANHO TAMBÉM*/
 
     const name = prod.querySelector(".info h3") ? prod.querySelector(".info h3").textContent.trim() : "Produto";
     const desc = prod.querySelector(".info .descrição") ? prod.querySelector(".info .descrição").textContent.trim() : "";
@@ -102,13 +104,13 @@
 
   function openCartModal(withSelected) {
     if (!cartOverlay) return;
-    cartOverlay.classList.remove("overlay-hidden");
+    cartOverlay.classList.remove("overlay-hidden");         /*ABRE O MODAL DO CARRINHO*/
     cartOverlay.classList.add("overlay-active");
     document.body.classList.add("popup-open");
 
     if (withSelected && modalSelected) {
       selectedProductEl.style.display = "block";
-      selectedNameEl.textContent = modalSelected.name;
+      selectedNameEl.textContent = modalSelected.name;                /* AO CLICAR EM PEDIR ELE EXIBE A AREA DO PRODUTO E AS OPÇÕES*/
       selectedDescEl.textContent = modalSelected.desc || "";
       qtyValueEl.textContent = modalSelected.qty;
 
@@ -118,7 +120,7 @@
         b.className = "modal-size";
         b.dataset.size = sz.size;
         b.dataset.price = sz.price;
-        b.textContent = `${sz.size} — ${formatBRL(sz.price)}`;
+        b.textContent = `${sz.size} — ${formatBRL(sz.price)}`;              /* CRIA OS BOTÕES DE TAMANHO DENTRO DO MODAL DO CARRINHO */
         b.addEventListener("click", () => {
           Array.from(modalTamanhosEl.children).forEach(x => x.classList.remove("active"));
           b.classList.add("active");
@@ -137,7 +139,7 @@
     updateBadge();
   }
 
-  if (closeCartBtn) closeCartBtn.addEventListener("click", closeCartModal);
+  if (closeCartBtn) closeCartBtn.addEventListener("click", closeCartModal);           /*FECHA O MODAL DO CARRINHO*/
   if (cartOverlay) cartOverlay.addEventListener("click", function (e) {
     if (e.target === cartOverlay) closeCartModal();
   });
@@ -155,10 +157,10 @@
     }
   }
 
-  if (qtyDecreaseBtn) qtyDecreaseBtn.addEventListener("click", () => {
+  if (qtyDecreaseBtn) qtyDecreaseBtn.addEventListener("click", () => {        /*AJUSTA A QUANTIDADE DO ITEM NO MODAL DO CARRINHO*/
     if (!modalSelected) return;
-    if (modalSelected.qty > 1) modalSelected.qty--;
-    qtyValueEl.textContent = modalSelected.qty;
+    if (modalSelected.qty > 1) modalSelected.qty--;                        
+    qtyValueEl.textContent = modalSelected.qty;    /* << ARMAZENA A QUANTIDADE NO ELEMENTO DO MODAL */
   });
   if (qtyIncreaseBtn) qtyIncreaseBtn.addEventListener("click", () => {
     if (!modalSelected) return;
@@ -166,7 +168,7 @@
     qtyValueEl.textContent = modalSelected.qty;
   });
 
-  if (modalAddBtn) modalAddBtn.addEventListener("click", () => {
+  if (modalAddBtn) modalAddBtn.addEventListener("click", () => {                  /*ADICIONA O ITEM SELECIONADO AO CARRINHO A PARTIR DO MODAL*/
     if (!modalSelected) return alert("Escolha um tamanho antes de adicionar.");
     if (!modalSelected.chosenSize) return alert("Escolha um tamanho antes de adicionar.");
 
@@ -183,7 +185,7 @@
       it.name === item.name &&
       String(it.size) === String(item.size) &&
       Number(it.price) === Number(item.price)
-    );
+    );                                                                   /*ADICIONA ITENS AO CARRINHO, SOMANDO A QUANTIDADE SE JÁ EXISTIR O MESMO ITEM (NOME, TAMANHO, PREÇO IGUAIS)*/
     if (existing) {
       existing.quantity = Number(existing.quantity) + Number(item.quantity);
     } else {
@@ -283,7 +285,7 @@
   }
 
   if (clearCartBtn) clearCartBtn.addEventListener("click", () => {
-    if (!cart.length) return;
+    if (!cart.length) return;                                                 /*LIMPA TODO O CARRINHO AO CLICAR NO BOTÃO LIMPAR CARRINHO*/
     if (!confirm("Deseja limpar todo o carrinho?")) return;
     cart = [];
     saveCart();
@@ -292,7 +294,7 @@
   });
 
   if (checkoutBtn) checkoutBtn.addEventListener("click", () => {
-    if (!cart.length) { alert("Seu carrinho está vazio!"); return; }
+    if (!cart.length) { alert("Seu carrinho está vazio!"); return; }                /*FINALIZA O PEDIDO VIA WHATSAPP, MONTANDO A MENSAGEM COM ITENS E TOTAL*/
 
     let message = "Olá! Gostaria de fazer o pedido:%0A%0A";
     cart.forEach((it, i) => {
@@ -302,12 +304,12 @@
     message += `%0ATotal: R$ ${total.toFixed(2).replace(".", ",")}%0A%0A`;
     message += "Endereço: %0A%0AForma de pagamento: %0A";
 
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;         /*ABRE O WHATSAPP COM A MENSAGEM PRONTA PARA O NÚMERO CONFIGURADO*/
     window.open(url, "_blank");
   });
 
   function init() {
-    renderCartItems();
+    renderCartItems();                                      /*INICIALIZA O CARRINHO AO CARREGAR A PÁGINA*/
     updateBadge();
   }
   init();
