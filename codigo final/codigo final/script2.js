@@ -1,13 +1,5 @@
-/* script2.js
-  - quick add: click tamanho dentro do card => adiciona item (mensagem toast)
-  - "Pedir agora": abre modal do carrinho com a pizza selecionada (nome/desc),
-    permite escolher tamanho e quantidade, adicionar ao carrinho
-  - carrinho persistente em localStorage (key: "carrinho")
-  - remover / ajustar qty no modal, finalizar pedido via WhatsApp
-  - login/cadastro simples via localStorage (clientesCadastrados, usuarioAtivo)
-  - número WhatsApp: 55 81 9964 1479 => "5581999641479"
-*/
-
+// script2.js
+// script2.js - Carrinho de compras e login/cadastro
 (function () {
   /* =================== CONFIG / DOM (CARRINHO) =================== */
   const STORAGE_KEY = "carrinho";
@@ -207,7 +199,7 @@
     cartItemsEl.innerHTML = "";
     if (!cart.length) {
       const li = document.createElement("li");
-      li.textContent = "Seu carrinho está vazio.";
+      li.textContent = "Seu carrinho está vazio.";              /*informa que o carrinho está vazio se não houver itens*/
       li.style.padding = "8px";
       cartItemsEl.appendChild(li);
       if (cartTotalEl) cartTotalEl.textContent = formatBRL(0);
@@ -215,25 +207,25 @@
     }
 
     cart.forEach((it, idx) => {
-      const li = document.createElement("li");
+      const li = document.createElement("li");                /*cria a li para o item*/
       li.className = "cart-item";
 
       const left = document.createElement("div");
-      left.className = "item-left";
+      left.className = "item-left";                 /*cria a div para cada item do carrinho com nome, tamanho, preço, botões de quantidade e remover*/
       left.innerHTML = `
         <strong>${it.name}</strong>
         <small>${it.size}</small>
         <small>${formatBRL(it.price)} un.</small>
       `;
 
-      const right = document.createElement("div");
+      const right = document.createElement("div");            /*cria a div do botão de remover e quantidade*/
       right.className = "item-right";
 
       const dec = document.createElement("button");
       dec.className = "qty-btn";
-      dec.textContent = "−";
+      dec.textContent = "−";                        
       dec.addEventListener("click", () => {
-        if (it.quantity > 1) it.quantity--;
+        if (it.quantity > 1) it.quantity--;                     /*botão de diminuir quantidade, remove o item se chegar a zero*/
         else cart.splice(idx, 1);
         saveCart();
         renderCartItems();
@@ -241,19 +233,19 @@
       });
 
       const qtySpan = document.createElement("span");
-      qtySpan.textContent = it.quantity;
+      qtySpan.textContent = it.quantity;                      /*exibe a quantidade do item no carrinho*/
 
       const inc = document.createElement("button");
       inc.className = "qty-btn";
       inc.textContent = "+";
       inc.addEventListener("click", () => {
         it.quantity++;
-        saveCart();
-        renderCartItems();
-        updateBadge();
+        saveCart();                        
+        renderCartItems();              /*renderiza os itens do carrinho novamente*/
+        updateBadge();                  /*atualiza o badge de quantidade*/
       });
 
-      const removeBtn = document.createElement("button");
+      const removeBtn = document.createElement("button");               /*botão de remover item do carrinho*/
       removeBtn.className = "clear-btn";
       removeBtn.textContent = "Remover";
       removeBtn.addEventListener("click", () => {
@@ -266,7 +258,7 @@
       });
 
       const subtotal = document.createElement("div");
-      subtotal.innerHTML = `<small>${formatBRL(it.price * it.quantity)}</small>`;
+      subtotal.innerHTML = `<small>${formatBRL(it.price * it.quantity)}</small>`;               /*exibe o subtotal do item (preço x quantidade)*/
 
       right.appendChild(dec);
       right.appendChild(qtySpan);
@@ -287,7 +279,7 @@
   if (clearCartBtn) clearCartBtn.addEventListener("click", () => {
     if (!cart.length) return;                                                 /*LIMPA TODO O CARRINHO AO CLICAR NO BOTÃO LIMPAR CARRINHO*/
     if (!confirm("Deseja limpar todo o carrinho?")) return;
-    cart = [];
+    cart = [];       /*array do carrinho esvaziado*/
     saveCart();
     renderCartItems();
     updateBadge();
@@ -347,12 +339,12 @@ const profileNome = document.getElementById("profileNome");
 const profileCpf = document.getElementById("profileCpf");
 const profileTel = document.getElementById("profileTel");
 
-// =========================
-// FUNÇÕES ÚTEIS
-// =========================
+
+              // FUNÇÕES ÚTEIS
+
 function maskCPF(v) {
-  v = v.replace(/\D/g, "");
-  return v.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+  v = v.replace(/\D/g, "");       /*remove tudo que não é dígito*/
+  return v.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");        /*formata o CPF no padrão 000.000.000-00*/
 }
 
 function maskPhone(v) {
@@ -365,8 +357,8 @@ function validarCPF(cpf) {
   if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
 
   let soma = 0;
-  for (let i = 0; i < 9; i++) soma += parseInt(cpf[i]) * (10 - i);
-  let resto = (soma * 10) % 11;
+  for (let i = 0; i < 9; i++) soma += parseInt(cpf[i]) * (10 - i);          /*calculo para verificar a integridade do cpf*/
+  let resto = (soma * 10) % 11;                                             /*cálculo do resto*/
   if (resto === 10) resto = 0;
   if (resto !== parseInt(cpf[9])) return false;
 
@@ -379,17 +371,17 @@ function validarCPF(cpf) {
 }
 
 function getUsers() {
-  return JSON.parse(localStorage.getItem("usuarios") || "[]");
+  return JSON.parse(localStorage.getItem("usuarios") || "[]");       /*recupera a lista de usuários do localStorage*/
 }
 
 function saveUsers(users) {
   localStorage.setItem("usuarios", JSON.stringify(users));
 }
 
-// =========================
-// FUNÇÕES DE TROCA DE TELA (LOGICA CORRIGIDA)
-// Garante que apenas uma tela está 'active' e visível.
-// =========================
+
+// FUNÇÕES DE TROCA DE TELA 
+
+
 function showLogin() {
   // Apenas o Login deve estar visível
   loginForm.classList.remove("hidden");

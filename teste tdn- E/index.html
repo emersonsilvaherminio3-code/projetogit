@@ -10,13 +10,14 @@
     <link rel="stylesheet" href=" style (1).css">
     
     <title>TDN Pizzaria</title>
+    
 </head>
 
 <body>
 
     <header class="content">
         <div class="logo">   <!--ATENÇÃO A CLASS-->
-            <img src="pizza-clipart-png.png" alt="Logo Pizzaria"> <h3>TDN PIZZARIA</h3>
+            <img src="imagens/pizza-clipart-png.png" alt="Logo Pizzaria"> <h3>TDN PIZZARIA</h3>
         </div>
         <nav>
             <ul class="list-menu">
@@ -24,8 +25,8 @@
                 <li><a href="#cardapio">Cardápio</a></li>
                 <li><a href="#sobre-nos">Sobre Nós</a></li>
                 <li><a href="#contatos">Contatos</a></li>
-                <li><a href="#"><i class="bi bi-instagram"></i></a></li>
-                <li><a href="#"><i class="bi bi-cart2"></i></a></li>
+                <li><a href="https://www.instagram.com/tdnpizzaria?igsh=Y2dqcGxrbzE0cmph"><i class="bi bi-instagram"></i></a></li>
+                 <li><a href="#" i class="bi bi-cart2" id="openCartBtn"></i> <span id="cart-badge">0</span></a></li>
             </ul>
         </nav>
 
@@ -39,251 +40,379 @@
     <section class="first-section" id="home">
         <div class="conteudo-principal">
             <h1>Deixe seu dia mais saboroso</h1>
-            <h2>As pizzas mais peso do nordeste</h2>
-            <div class="btn">
-                <button class="reservar">RESERVE A SUA</button>
+            <h2>As Melhores Pizzas Para você e sua Familia</h2>
+            <div class="btn">                
                 <button class="login-btn" id="openLoginBtn">LOGIN</button>
 
-<!-- MODAL DE LOGIN (apenas 1 vez na página) -->
+<!--MODAL DE LOGIN-->
 <div id="loginOverlay" class="overlay-hidden">
-  <div id="loginPopup" class="popup-box">
-    <button id="closeLoginBtn" class="close-btn">&times;</button>
+  <div id="loginPopup" class="login-popup">
+    <button id="closeLoginBtn" class="close-btn" aria-label="Fechar">&times;</button>
 
-    <h3>Entrar / Cadastre-se</h3>
+    <h3 id="loginTitle">Entrar</h3>
 
-    <form id="loginForm">
+    <!--TELA DE LOGIN -->
+    <form id="loginForm" class="login-screen active" autocomplete="off">
       <div class="form-group">
-        <label for="tel">Telefone</label>
-        <input id="tel" name="telefone" type="tel" maxlength="11" required placeholder="(00) 0 0000-0000">
+        <label for="loginCpf">CPF</label>
+        <input id="loginCpf" name="cpf" type="tel" maxlength="14" required placeholder="000.000.000-00" inputmode="numeric" />
       </div>
 
       <div class="form-group">
-        <label for="nome">Nome </label>
-        <input id="nome" name="nome" type="text" maxlength="40" required placeholder="Seu nome">
+        <label for="loginPassword">Senha</label>
+        <div class="password-wrapper">
+          <input id="loginPassword" name="password" type="password" maxlength="100" required placeholder="Sua senha" />
+          <button type="button" class="show-pass-btn" data-target="loginPassword" aria-label="Mostrar senha">👁</button>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="cpf">CPF</label>
-        <input id="cpf" name="cpf" type="number"  required placeholder="000.000.000-00" maxlength="11">
-      </div>
+      <button type="submit" class="confirmarlogin">Entrar</button>
 
-      <div class="form-group">
-        <label for="endereco">Endereço</label>
-        <input id="endereco" name="endereco" type="text" maxlength="40" required placeholder="Seu endereço">
-      </div>
-
-      <button type="submit" class="confirmar">Confirmar</button>
+      <p class="toggle-screen">
+        Não tem conta? <a href="#" id="goToRegister">Cadastrar-se</a>
+      </p>
     </form>
+
+    <!--TELA DE CADASTRO -->
+    <form id="registerForm" class="register-screen hidden" autocomplete="off">
+      <div class="form-group">
+        <label for="regNome">Nome completo</label>
+        <input id="regNome" name="nome" type="text" maxlength="40" required placeholder="Seu nome" />
+      </div>
+
+      <div class="form-group">
+        <label for="regCpf">CPF</label>
+        <input id="regCpf" name="cpf" type="tel" maxlength="14" required placeholder="000.000.000-00" inputmode="numeric" />
+      </div>
+
+      <div class="form-group">
+        <label for="regTel">Telefone</label>
+        <input id="regTel" name="telefone" type="tel" maxlength="15" required placeholder="(00) 00000-0000" inputmode="tel" />
+      </div>
+
+      <div class="form-group">
+        <label for="regPassword">Senha</label>
+        <div class="password-wrapper">
+          <input id="regPassword" name="password" type="password" maxlength="100" required placeholder="Crie uma senha (min 1 caract.)" />
+          <button type="button" class="show-pass-btn" data-target="regPassword" aria-label="Mostrar senha">👁</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="regPasswordConfirm">Repetir senha</label>
+        <div class="password-wrapper">
+          <input id="regPasswordConfirm" name="passwordConfirm" type="password" maxlength="100" required placeholder="Repita a senha" />
+          <button type="button" class="show-pass-btn" data-target="regPasswordConfirm" aria-label="Mostrar senha">👁</button>
+        </div>
+      </div>
+
+      <button type="submit" class="confirmar">Cadastrar</button>
+
+      <p class="toggle-screen">
+        Já possui conta? <a href="#" id="goToLogin">Entrar</a>
+      </p>
+    </form>
+
+    <!--TELA DE PERFIL (aparece quando usuário está logado)-->
+    <section id="profileScreen" class="profile-screen hidden">
+      <h4>Minha Conta</h4>
+
+      <ul class="profile-list">
+        <li><strong>Nome:</strong> <span id="profileNome">—</span></li>
+        <li><strong>CPF:</strong> <span id="profileCpf">—</span></li>
+        <li><strong>Telefone:</strong> <span id="profileTel">—</span></li>
+      </ul>
+
+      <div class="profile-actions">
+        <button id="btnLogout" class="danger">Sair / Logout</button>
+      </div>
+
+      <p class="toggle-screen">
+        Voltar para <a href="#" id="goToLoginFromProfile">Entrar</a>
+      </p>
   </div>
 </div>
 
-    </div>
-</div>
-
-            </div>
-        </div>
     </section>
 
+  
     <section class="sobre-nos" id="sobre-nos">
         <div class="main">
             <div class="content-sobre">
                 <h2>Sobre Nós</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam,
-                    necessitatibus magnam, expedita reiciendis itaque et obcaecati
-                    voluptas, quasi excepturi recusandae cumque! Voluptates,
-                    numquam! Minus, ratione! Similique, id! Esse, quidem totam.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam,
-                    necessitatibus magnam, expedita reiciendis itaque et obcaecati
-                    voluptas, quasi excepturi recusandae cumque! Voluptates,
-                    numquam! Minus, ratione! Similique, id! Esse, quidem totam.</p>
+                <p>A Tudo de Novo Pizzaria foi feita para você aproveitar os melhores momentos com quem você ama, se deliciando das nossas pizzas
+                  feitas com ingredientes selecionados e muito amor, além de um atendimento diferenciado que faz toda a diferença e de uma facilidade
+                  na hora de pedir a sua pizza favorita.</p>
+                 <p> Aproveite os melhores momentos da vida tudo de novo com a TDN Pizzaria!
+                </p>
+                
             </div>
-            <div class="img-cozinha">
-                <img src="" alt="Foto da cozinha da pizzaria"> </div>
-        </div>
     </section>
-    <section class="cardapio" id="cardapio">
-        <h2>Cardápio</h2>
-        <details>
-            <summary>Pizza salgadas</summary>
-        <div class="itens-cardapio">
-            <div>
-                <img src="https://png.pngtree.com/png-clipart/20240327/original/pngtree-cheese-and-chicken-pizza-png-image_14698365.png" alt="Pizza de Frango"> <div class="info">
-                    <h3>Frango</h3>
-                    <p class="descrição">Deliciosa combinação de frango desfiado temperado, milho amarelinho, generosas camadas de cheddar cremoso e um toque de orégano, tudo isso sobre uma massa macia por dentro e crocante por fora.</p>
-                    <h4><span>6 fatias</span> <span>R$35,00</span></h4>
-                    <h4><span>8 fatias</span> <span>R$45,00</span></h4>
-                    <h4><span>12 fatias</span> <span>R$55,00</span></h4>
-                    <button class="pedir">Pedir agora</button>
-                </div>
-            </div>
-            <div>
-                <img src="https://bretas.vtexassets.com/arquivos/ids/183748/6571bee5558925a4e8897e3d.jpg?v=638375500577230000"> <div class="info">
-                    <h3>Calabresa</h3>
-                    <p class="descrição">Clássica, saborosa e perfeita para acompanhar sua diversão! Nossa pizza de calabresa é preparada com massa macia, molho caseiro, fatias generosas de calabresa e finalizada com cebola e orégano.</p>
-                    <h4><span>6 fatias</span> <span>R$35,00</span></h4>
-                    <h4><span>8 fatias</span> <span>R$45,00</span></h4>
-                    <h4><span>12 fatias </span><span>R$55,00</span></h4>
-                    <button class="pedir">Pedir agora</button>
-                </div>
-            </div>
-            <div>
-                <img src="https://mercantilatacado.vtexassets.com/arquivos/ids/184481-800-auto?v=638350433052930000&width=800&height=auto&aspect=true" alt="Pizza Portuguesa"> <div class="info">
-                    <h3>Portuguesa</h3>
-                    <p class="descrição"> Esse sabor é um dos queridinhos daqueles que gostam daquela pizza mais tradicional, uma combinação que agrada ao paladar mais exigente.Feita com uma mistura de ingredientes como presunto, cebola, ovos e azeitona preta. </p>
-                    <h4><span>6 fatias</span> <span>R$35,00</span></h4>
-                    <h4><span>8 fatias</span> <span>R$45,00</span></h4>
-                    <h4><span>12 fatias</span> <span>R$55,00</span></h4>
-                    <button class="pedir">Pedir agora</button>
-                </div>
-            </div>
-            <div>
-                <img src="https://s3-sa-east-1.amazonaws.com/superimg/img.produtos/6455572/645/img_1200_1.png" alt="Pizza de Mussarela"> <div class="info">
-                    <h3>Mussarela</h3>
-                    <p class="descrição">O tradicional sabor que encanta !
-                    A pizza de Mussarela é a escolha perfeita para quem ama o sabor clássico e irresistível da mussarela derretida. Uma combinação simples, mas repleta de sabor, em cada fatia.</p>
-                    <h4><span>6 fatias</span> <span>R$35,00</span></h4>
-                    <h4><span>8 fatias</span> <span>R$45,00</span></h4>
-                    <h4><span>12 fatias </span><span>R$55,00</span></h4>
-                    <button class="pedir">Pedir agora</button>
-                </div>
-            </div>
-            <div>
-                <img src="pzzDE4queijos.jpg" alt="Pizza de 4QUEIJOS"> <div class="info">
-                    <h3>4Queijos</h3>
-                    <p class="descrição">A combinação perfeita dos amantes de queijo!
-                    Nossa Pizza Quatro Queijos é feita com queijo de muçarela, gorgonzola, parmesão e catupiry. Cremosa, marcante e perfeita para acompanhar um bom vinho !</p>
-                    <h4><span>6 fatias</span> <span>R$35,00</span></h4>
-                    <h4><span>8 fatias</span> <span>R$45,00</span></h4>
-                    <h4><span>12 fatias </span><span>R$55,00</span></h4>
-                    <button class="pedir">Pedir agora</button>
-                </div>
-            </div>
-            <div>
-                <img src="pzzDEMARGUERITA.png" alt="Pizza de Marguerita"> <div class="info">
-                    <h3>Marguerita</h3>
-                    <p class="descrição">A Pizza Marguerita é um classico Italiano. A base fina e crocante serve de palco para o molho de tomate fresco, a mossarella, cremosa e suculenta, se funde em harmonia com os ingredientes, enquanto folhas de manjericão fresco adicionam um aroma inconfundível, onde cada fatia remetem as cores da bandeira Italiana.</p>
-                    <h4><span>6 fatias</span> <span>R$35,00</span></h4>
-                    <h4><span>8 fatias</span> <span>R$45,00</span></h4>
-                    <h4><span>12 fatias </span><span>R$55,00</span></h4>
-                    <button class="pedir">Pedir agora</button>
-                </div>
-            </div>
-            <div>
-                <img src="pzzDEBACON.jpeg" alt="Pizza de Bacon"> <div class="info">
-                    <h3>Bacon</h3>
-                    <p class="descrição">A nossa Pizza de Bacon é uma homenagem ao sabor irresistível do bacon crocante, combinado com a suavidade da mussarela e um toque de orégano que realça o sabor.</p>
-                    <h4><span>6 fatias</span> <span>R$35,00</span></h4>
-                    <h4><span>8 fatias</span> <span>R$45,00</span></h4>
-                    <h4><span>12 fatias </span><span>R$55,00</span></h4>
-                    <button class="pedir">Pedir agora</button>
-                </div>
-            </div>
+  <section class="cardapio" id="cardapio">
+  <h2>Cardápio</h2>
 
-            </div>
-            </details>
+  <!--PIZZAS SALGADAS-->
+  <details>
+    <summary>Pizzas Salgadas</summary>
 
-            <details>
-                <summary>Pizzas doces</summary>
-                <div class="itens-cardapio">
-            <div>
-                <img src="pzz de chocoloate.jpg" alt="Pizza de Chocolate"> <div class="info">
-                    <h3>Chocolate</h3>
-                    <p class="descrição">A pizza doce de chocolate é a receita perfeita para quem gosta de sobremesas deliciosas.Feita com chocoloate derretido e uma massa levinha é o lanche ideal para curtir com familia e amigos !</p>
-                    <h4><span>6 fatias</span> <span>R$35,00</span></h4>
-                    <h4><span>8 fatias</span> <span>R$45,00</span></h4>
-                    <h4><span>12 fatias</span> <span>R$55,00</span></h4>
-                    <button class="pedir">Pedir agora</button>
-                </div>
-            </div>
-            <div>
-                <img src="pzzSensação.png" alt="Pizza de Sensação"> <div class="info">
-                    <h3>Sensação</h3>
-                    <p class="descrição"> A combinação perfeita de morangos frescos com o chocolate cremoso sobre uma massa artesanal leve e crocante. 
-                    Seja para adoçar o final de semana ou tornar qualquer dia especial, a Pizza Sensação é a sobremesa perfeita para os amantes de pizza e doce !</p>
-                    <h4><span>6 fatias</span> <span>R$35,00</span></h4>
-                    <h4><span>8 fatias</span> <span>R$45,00</span></h4>
-                    <h4><span>12 fatias </span><span>R$55,00</span></h4>
-                    <button class="pedir">Pedir agora</button>
-                </div>
-            </div>
-            <div>
-                <img src="pizzaconfete.jpg" alt="Pizza de Confete"> <div class="info">
-                    <h3>Confete</h3>
-                    <p class="descrição">A Pizza de Confete é diversão em forma de sabor o equilíbrio perfeito entre o creme doce especial e o toque crocante dos confeitos coloridos que todo mundo ama.</p>
-                    <h4><span>6 fatias </span><span>R$35,00</span></h4>
-                    <h4><span>8 fatias</span> <span>R$45,00</span></h4>
-                    <h4><span>12 fatias</span> <span>R$55,00</span></h4>
-                    <button class="pedir">Pedir agora</button>
-                </div>
-            </div>
-            <div>
-                <img src="pizzaromeuejulieta.png" alt="Pizza Romeu e Julieta"> <div class="info">
-                    <h3>Romeu e Julieta</h3>
-                    <p class="descrição">A clássica combinação de queijo e goiabada. Com uma base suave de creme de leite, essa receita traz o equilíbrio perfeito entre a cremosidade do queijo e a doçura marcante da goiabada.</p>
-                    <h4><span>6 fatias</span> <span>R$35,00</span></h4>
-                    <h4><span>8 fatias</span> <span>R$45,00</span></h4>
-                    <h4><span>12 fatias</span> <span>R$55,00</span></h4>
-                    <button class="pedir">Pedir agora</button>
-                </div>
-            </div>
+    <div class="itens-cardapio">
+
+      <!-- FRANGO -->
+      <div class="produto">
+        <img src="imagens/frangoccatupiry.jpg" alt="Pizza de Frango com Catupiry">
+        <div class="info">
+          <h3>Frango com Catupiry</h3>
+          <p class="descrição">Deliciosa combinação de frango desfiado temperado, milho amarelinho, generosas camadas de cheddar cremoso e um toque de orégano, tudo isso sobre uma massa macia por dentro e crocante por fora.</p>
+          <div class="tamanhos">
+            <button class="tamanho-btn" data-size="6" data-price="29.00">6 fatias — R$29,00</button>
+            <button class="tamanho-btn" data-size="8" data-price="35.00">8 fatias — R$35,00</button>
+            <button class="tamanho-btn" data-size="12" data-price="45.00">12 fatias — R$45,00</button>
+          </div>
+          <button class="pedir-btn" data-nome="Frango">Pedir agora</button>
         </div>
-        </details>
-   
-        <details>
-            <summary>Bebidas</summary>
-             <div class="itens-cardapio">
-                 <div>
-                <img src="antartica.jpeg" alt="Guarana Antartica"> <div class="info">
-                    <h3>Antartica</h3>
-                    <h4><span>1L</span> <span>R$6,00</span></h4>
-                    <H4><SPAn>2L</SPAn>
-                    <span>R$11,00</span></H4>
-                    <button class="pedir">Pedir agora</button>
-                </div>
-                    </DIV>  
-                    
-                    <div>
-                    <img src="coca cola.jpeg" alt="Refrigerante Coca Cola"> <div class="info">
-                    <h3>Coca Cola</h3>
-                    <h4><span>1L</span> <span>R$6,00</span></h4>
-                    <H4><SPAn>2L</SPAn>
-                    <span>R$11,00</span></H4>
-                    <button class="pedir">Pedir agora</button>
-                </div>
-                    </DIV>
-                    
-                    <div>
-                    <img src="fanta.jpg" alt="Refrigerante Fanta"> <div class="info">
-                    <h3>Fanta</h3>
-                    <h4><span>1L</span> <span>R$6,00</span></h4>
-                    <H4><SPAn>2L</SPAn>
-                    <span>R$11,00</span></H4>
-                    <button class="pedir">Pedir agora</button>
-                </div>
-                    </DIV>
-                    
-                    <div>
-                    <img src="pepsi.jpeg" alt="Refrigerante Pepsi"> <div class="info">
-                    <h3>Pepsi</h3>
-                    <h4><span>1L</span> <span>R$6,00</span></h4>
-                    <H4><SPAn>2L</SPAn>
-                    <span>R$11,00</span></H4>
-                    <button class="pedir">Pedir agora</button>
-                </div>
-                    </DIV>    
-       </div>
-        </details>
-    </section>
+      </div>
+
+      <!-- CALABRESA -->
+      <div class="produto">
+        <img src="imagens/pzzdecalabresa.png" alt="Pizza Calabresa">
+        <div class="info">
+          <h3>Calabresa</h3>
+          <p class="descrição"> Clássica, saborosa e perfeita para acompanhar sua diversão! Nossa pizza de calabresa é preparada com massa macia, molho caseiro, fatias generosas de calabresa e finalizada com cebola e orégano.</p>
+          <div class="tamanhos">
+            <button class="tamanho-btn" data-size="6" data-price="29.00">6 fatias — R$29,00</button>
+            <button class="tamanho-btn" data-size="8" data-price="35.00">8 fatias — R$35,00</button>
+            <button class="tamanho-btn" data-size="12" data-price="45.00">12 fatias — R$45,00</button>
+          </div>
+          <button class="pedir-btn" data-nome="Calabresa">Pedir agora</button>
+        </div>
+      </div>
+
+      <!-- PORTUGUESA -->
+      <div class="produto">
+        <img src="imagens/pzzDEportuguesa.jpg" alt="Pizza Portuguesa">
+        <div class="info">
+          <h3>Portuguesa</h3>
+          <p class="descrição">Esse sabor é um dos queridinhos daqueles que gostam daquela pizza mais tradicional, uma combinação que agrada ao paladar mais exigente.Feita com uma mistura de ingredientes como presunto, cebola, ovos e azeitona preta.</p>
+          <div class="tamanhos">
+            <button class="tamanho-btn" data-size="6" data-price="29.00">6 fatias — R$29,00</button>
+            <button class="tamanho-btn" data-size="8" data-price="35.00">8 fatias — R$35,00</button>
+            <button class="tamanho-btn" data-size="12" data-price="45.00">12 fatias — R$45,00</button>
+          </div>
+          <button class="pedir-btn" data-nome="Portuguesa">Pedir agora</button>
+        </div>
+      </div>
+
+      <!-- MUSSARELA -->
+      <div class="produto">
+        <img src="imagens/pzzdemussarela.jpg" alt="Pizza Mussarela">
+        <div class="info">
+          <h3>Mussarela</h3>
+          <p class="descrição"> A pizza de Mussarela é a escolha perfeita para quem ama o sabor clássico e irresistível da mussarela derretida. Uma combinação simples, mas repleta de sabor, em cada fatia.</p>
+          <div class="tamanhos">
+            <button class="tamanho-btn" data-size="6" data-price="29.00">6 fatias — R$29,00</button>
+            <button class="tamanho-btn" data-size="8" data-price="35.00">8 fatias — R$35,00</button>
+            <button class="tamanho-btn" data-size="12" data-price="45.00">12 fatias — R$45,00</button>
+          </div>
+          <button class="pedir-btn" data-nome="Mussarela">Pedir agora</button>
+        </div>
+      </div>
+      <!-- BACON -->
+      <div class="produto">
+        <img src="imagens/pzzDEBACON.jpeg" alt="Pizza Bacon">
+        <div class="info">
+          <h3>Bacon</h3>
+          <p class="descrição">A nossa Pizza de Bacon é uma homenagem ao sabor irresistível do bacon crocante, combinado com a suavidade da mussarela e um toque de orégano que realça o sabor.</p>
+          <div class="tamanhos">
+            <button class="tamanho-btn" data-size="6" data-price="30.00">6 fatias — R$30,00</button>
+            <button class="tamanho-btn" data-size="8" data-price="40.00">8 fatias — R$40,00</button>
+            <button class="tamanho-btn" data-size="12" data-price="55.00">12 fatias — R$55,00</button>
+          </div>
+          <button class="pedir-btn" data-nome="Pizza Bacon">Pedir agora</button>
+        </div>
+      </div>
+      <!-- MARGUERITA -->
+      <div class="produto">
+        <img src="imagens/pzzDEMARGUERITA.png" alt="Pizza Marguerita">
+        <div class="info">
+          <h3>Marguerita</h3>
+          <p class="descrição">Um classico Italiano. A base fina e crocante serve de palco para o molho de tomate fresco, a mossarella, cremosa e suculenta, se funde em harmonia com os ingredientes, enquanto folhas de manjericão fresco adicionam um aroma inconfundível, onde cada fatia remetem as cores da bandeira Italiana.</p>
+          <div class="tamanhos">
+            <button class="tamanho-btn" data-size="6" data-price="30.00">6 fatias — R$30,00</button>
+            <button class="tamanho-btn" data-size="8" data-price="40.00">8 fatias — R$40,00</button>
+            <button class="tamanho-btn" data-size="12" data-price="55.00">12 fatias — R$55,00</button>
+          </div>
+          <button class="pedir-btn" data-nome="Pizza Marguerita">Pedir agora</button>
+        </div>
+      </div>
+      <!-- 4 QUEIJOS -->
+      <div class="produto">
+        <img src="imagens/pzzDE4queijos.jpg" alt="Pizza 4Queijos">
+        <div class="info">
+          <h3>4Queijos</h3>
+          <p class="descrição">
+                   A Nossa Pizza Quatro Queijos é feita com queijo de muçarela, gorgonzola, parmesão e catupiry. Cremosa, marcante e perfeita para acompanhar um bom vinho !</p>
+          <div class="tamanhos">
+            <button class="tamanho-btn" data-size="6" data-price="30.00">6 fatias — R$30,00</button>
+            <button class="tamanho-btn" data-size="8" data-price="40.00">8 fatias — R$40,00</button>
+            <button class="tamanho-btn" data-size="12" data-price="55.00">12 fatias — R$55,00</button>
+          </div>
+          <button class="pedir-btn" data-nome="Pizza 4Queijos">Pedir agora</button>
+        </div>
+      </div>
+
+
+
+    </div>
+  </details>
+
+  <!--PIZZAS DOCES -->
+  <details>
+    <summary>Pizzas Doces</summary>
+
+    <div class="itens-cardapio">
+
+      <!-- CHOCOLATE -->
+      <div class="produto">
+        <img src="imagens/pzz de chocoloate.jpg" alt="Pizza de Chocolate">
+        <div class="info">
+          <h3>Chocolate</h3>
+          <p class="descrição">A pizza doce de chocolate é a receita perfeita para quem gosta de sobremesas deliciosas.Feita com chocoloate derretido e uma massa levinha. </p>
+          <div class="tamanhos">
+            <button class="tamanho-btn" data-size="6" data-price="30.00">6 fatias — R$30,00</button>
+            <button class="tamanho-btn" data-size="8" data-price="40.00">8 fatias — R$40,00</button>
+            <button class="tamanho-btn" data-size="12" data-price="55.00">12 fatias — R$55,00</button>
+          </div>
+          <button class="pedir-btn" data-nome="Chocolate">Pedir agora</button>
+        </div>
+      </div>
+
+      <!-- CONFETE -->
+      <div class="produto">
+        <img src="imagens/pizzaconfete.jpg" alt="Confete">
+        <div class="info">
+          <h3>Confete</h3>
+          <p class="descrição">A Pizza de Confete é diversão em forma de sabor o equilíbrio perfeito entre o creme doce especial e o toque crocante dos confeitos coloridos que todo mundo ama.</p>
+          <div class="tamanhos">
+            <button class="tamanho-btn" data-size="6" data-price="30.00">6 fatias — R$30,00</button>
+            <button class="tamanho-btn" data-size="8" data-price="40.00">8 fatias — R$40,00</button>
+            <button class="tamanho-btn" data-size="12" data-price="55.00">12 fatias — R$55,00</button>
+          </div>
+          <button class="pedir-btn" data-nome="Confete">Pedir agora</button>
+        </div>
+      </div>
+      <!-- ROMEU E JULIETA -->
+       <div class="produto">
+        <img src="imagens/pizzaromeuejulieta.png" alt="Romeun e Julieta">
+        <div class="info">
+          <h3>Romeu e Julieta</h3>
+          <p class="descrição"> Com uma base suave de creme de leite, essa receita traz o equilíbrio perfeito entre a cremosidade do queijo e a doçura marcante da goiabada.</p>
+          <div class="tamanhos">
+            <button class="tamanho-btn" data-size="6" data-price="35.00">6 fatias — R$35,00</button>
+            <button class="tamanho-btn" data-size="8" data-price="44.00">8 fatias — R$44,00</button>
+            <button class="tamanho-btn" data-size="12" data-price="55.00">12 fatias — R$55,00</button>
+          </div>
+          <button class="pedir-btn" data-nome="Romeu e Julieta">Pedir agora</button>
+        </div>
+      </div>
+      <!-- SENSACAO -->
+       <div class="produto">
+        <img src="imagens/pzzSensação.png" alt="Sensação">
+        <div class="info">
+          <h3>Sensação</h3>
+          <p class="descrição"> A combinação perfeita de morangos frescos com o chocolate cremoso sobre uma massa artesanal leve e crocante. 
+                    </p>
+          <div class="tamanhos">
+            <button class="tamanho-btn" data-size="6" data-price="35.00">6 fatias — R$35,00</button>
+            <button class="tamanho-btn" data-size="8" data-price="44.00">8 fatias — R$44,00</button>
+            <button class="tamanho-btn" data-size="12" data-price="55.00">12 fatias — R$55,00</button>
+          </div>
+          <button class="pedir-btn" data-nome="Sensação">Pedir agora</button>
+        </div>
+      </div>
+
+    </div>
+  </details>
+
+  <!-- ===================== BEBIDAS ===================== -->
+  <details>
+    <summary>Bebidas</summary>
+
+    <div class="itens-cardapio">
+
+      <!-- ANTARCTICA -->
+      <div class="produto">
+        <img src="imagens/antartica.jpeg" alt="Guaraná Antartica">
+        <div class="info">
+          <h3>Antarctica</h3>
+          <div class="tamanhos">
+            <button class="tamanho-btn" data-size="1L" data-price="6.00">1L — R$6,00</button>
+            <button class="tamanho-btn" data-size="2L" data-price="10.00">2L — R$10,00</button>
+          </div>
+          <button class="pedir-btn" data-nome="Antarctica">Pedir agora</button>
+        </div>
+      </div>
+
+      <!-- COCA -->
+      <div class="produto">
+        <img src="imagens/coca cola.jpeg" alt="Coca-Cola">
+        <div class="info">
+          <h3>Coca-Cola</h3>
+          <div class="tamanhos">
+            <button class="tamanho-btn" data-size="1L" data-price="8.00">1L — R$8,00</button>
+            <button class="tamanho-btn" data-size="2l" data-price="13.00">2L — R$13,00</button>
+          </div>
+          <button class="pedir-btn" data-nome="Coca-Cola">Pedir agora</button>
+        </div>
+      </div>
+      <!-- PEPSI -->
+      <div class="produto">
+        <img src="imagens/pepsi.jpeg" alt="Pepsi">
+        <div class="info">
+          <h3>Pepsi</h3>
+          <div class="tamanhos">
+            <button class="tamanho-btn" data-size="1L" data-price="7.00">1L — R$7,00</button>
+            <button class="tamanho-btn" data-size="2L" data-price="12.00">2L — R$12,00</button>
+          </div>
+          <button class="pedir-btn" data-nome="Pepsi">Pedir agora</button>
+        </div>
+      </div>
+      <!-- FANTA -->
+      <div class="produto">
+        <img src="imagens/fanta.jpg" alt="Fanta">
+        <div class="info">
+          <h3>Fanta</h3>
+          <div class="tamanhos">
+            <button class="tamanho-btn" data-size="1L" data-price="6.00">1L — R$6,00</button>
+            <button class="tamanho-btn" data-size="2L" data-price="11.00">2L — R$11,00</button>
+          </div>
+          <button class="pedir-btn" data-nome="Fanta">Pedir agora</button>
+        </div>
+      </div>
+
+    </div>
+  </details>
+
+</section>
+
+    </div>
+  </details>
+</section>
+
     <section class="contatos" id="contatos">
         <h3>Contatos</h3>
         <div class="contatos-secao">
             <div>
                 <i class="bi bi-telephone"></i>
-                <span>(81) 9 99641479</span>
+                <span>(81) 9 9964-1479</span>                          
             </div>
             <div>
-                <i class="bi bi-instagram"></i>
-                <span>@seu_instagram</span>
+               <i class="bi bi-telephone"></i>
+                <span>(81) 9 9936-6516</span>                          
+            </div>
+            
+            <div>
+              <i class="bi bi-instagram"></i><a href="https://www.instagram.com/tdnpizzaria?igsh=Y2dqcGxrbzE0cmph">
+                @tdnpizzaria</a>
             </div>
         </div>
     </section>
@@ -292,7 +421,71 @@
         <h4> &copy Emerson Jose e Richard Lofiego </h4>
     </footer>
 
-  
+!<!--MODAL DO CARRINHO-->
+  <div id="cartOverlay" class="overlay-hidden">
+    <div id="cartPopup" class="cart-popup">
+      <button id="closeCartBtn" class="cart-close-btn">&times;</button>
+
+      <h3 id="cart-modal-title">Seu Pedido</h3>
+
+      <!-- área que exibe pizza selecionada quando aberto via "Pedir agora" -->
+      <div id="selected-product" class="selected-product" style="display:none;">
+        <strong id="selected-name"></strong>
+        <p id="selected-desc" class="descricao-pequena"></p>
+
+        <div id="modal-tamanhos" class="modal-tamanhos"></div>
+
+        <div class="modal-quantidade">
+          <button id="qty-decrease" class="qty-btn">−</button>
+          <span id="qty-value">1</span>
+          <button id="qty-increase" class="qty-btn">+</button>
+        </div>
+
+        <div class="modal-actions">
+          <button id="modal-add-btn" class="cart-confirmar">Adicionar ao carrinho</button>
+        </div>
+
+        <hr />
+      </div>
+
+      <!-- LISTA DE ITENS DO CARRINHO -->
+      <ul id="cart-items" class="cart-items"></ul>
+
+      <div class="cart-footer">
+        <div class="cart-total">Total: <span id="cart-total">R$0,00</span></div>
+        <div class="cart-buttons">
+          <button id="clearCartBtn" class="clear-btn">Limpar carrinho</button>
+          <button id="checkoutBtn" class="confirmar">Finalizar pedido (WhatsApp)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- toast discreto -->
+  <div id="toast" class="toast-hidden">Adicionado ao carrinho!</div>
+
+
+
+
+
+  <script src="script2.js"></script>
+
+
+
+
+
 </body>
-<script src="script2.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
 </html>     
