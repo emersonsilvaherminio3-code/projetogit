@@ -409,12 +409,26 @@ footer {
         padding: 0px 40px;
     }
 
+    .content .list-menu {
+        display: nome;
+    }
+
+    .one,
+    .two,
+    .three {
+        width: 80%;
+        height: 2px;
+        background-color: white;
+        margin: 6px auto;
+        transition-duration: 0,5s;
+    }
+    
     .itens-cardapio {
         grid-template-columns: repeat(2, minmax(50px, 350px));
     }
 
     .itens-cardapio .info h4 {
-        margin-left: -12rem;
+        margin-left: 12rem;
     }
 
     .list-menu {
@@ -422,7 +436,8 @@ footer {
     }
 
     .menu-toggle {
-        display: block; /* Mostra o ícone hambúrguer */
+        width: 30px;
+        height: 30px;
     }
 
     /* Estilo do Menu Aberto (Classe .on) */
