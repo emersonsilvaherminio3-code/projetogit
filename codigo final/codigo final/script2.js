@@ -1,7 +1,7 @@
 // script2.js
 // script2.js - Carrinho de compras e login/cadastro
 (function () {
-  /* =================== CONFIG / DOM (CARRINHO) =================== */
+  /* CONFIG / DOM (CARRINHO)  */
   const STORAGE_KEY = "carrinho";
   const WHATSAPP_NUMBER = "5581999641479";
 
@@ -17,7 +17,7 @@
   const cartBadge = document.getElementById("cart-badge");
   const toast = document.getElementById("toast");
 
-  // Modal selected product elements
+  /*  MODAL DO CARRINHO (CARRINHO)*/
   const selectedProductEl = document.getElementById("selected-product");
   const selectedNameEl = document.getElementById("selected-name");
   const selectedDescEl = document.getElementById("selected-desc");
@@ -28,11 +28,11 @@
   const modalAddBtn = document.getElementById("modal-add-btn");
   const cartModalTitle = document.getElementById("cart-modal-title");
 
-  /* =================== STATE (CARRINHO) =================== */
+  /* STATE (CARRINHO) */
   let cart = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
   let modalSelected = null;
 
-  /* =================== HELPERS(FUNÇÕES UTILITARIAS) (CARRINHO) =================== */
+  /* FUNÇÕES UTILITARIAS (CARRINHO) */
   function saveCart() { localStorage.setItem(STORAGE_KEY, JSON.stringify(cart)); }
   function formatBRL(n) {
     return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });  /*converte número para moeda BRL*/
@@ -50,7 +50,7 @@
     cartBadge.textContent = totalQty;
   }
 
-  /* =================== CARRINHO: leitura de tamanhos e quick add =================== */
+  /* CARRINHO: leitura de tamanhos  */
  
   function buildSizesFromProduct(prodElem) {
     const btns = Array.from(prodElem.querySelectorAll(".tamanho-btn"));             /*ESSA FUNÇÃO PEGA OS DADOS DE TAMANHO E PREÇO DOS PRODUTOS MARCADOS COM TAMANHO-BTN*/
@@ -85,7 +85,7 @@
     openCartModal(true);
   });
 
-  /* =================== MODAL DO CARRINHO =================== */
+  /* MODAL DO CARRINHO  */
   if (openCartBtn) {
     openCartBtn.addEventListener("click", function (ev) {
       ev.preventDefault();
@@ -171,7 +171,7 @@
     openCartModal(false);
   });
 
-  /* =================== CARRINHO: operações =================== */
+  /*CARRINHO: operações */
   function addToCart(item) {
     const existing = cart.find(it =>
       it.name === item.name &&
@@ -306,9 +306,9 @@
   }
   init();
 
-// =========================
+
 // ELEMENTOS
-// =========================
+
 const openLoginBtn = document.getElementById("openLoginBtn");
 const loginOverlay = document.getElementById("loginOverlay");
 const closeLoginBtn = document.getElementById("closeLoginBtn");
@@ -426,17 +426,17 @@ function showProfile(user) {
   profileScreen.classList.add("active");
 }
 
-// =========================
-// ABRIR / FECHAR MODAL (CORREÇÃO DE SOBREPOSIÇÃO) ✅
+
+// ABRIR / FECHAR MODAL 
 // Esconde e mostra o botão principal.
-// =========================
+
 openLoginBtn.addEventListener("click", () => {
   loginOverlay.classList.remove("overlay-hidden");
   
-  // ✅ CORREÇÃO: Esconde o botão da página principal ao ABRIR o modal
+  /*Esconde o botão da página principal ao ABRIR o modal*/
   openLoginBtn.classList.add("open-btn-hidden"); 
 
-  const user = JSON.parse(localStorage.getItem("logado"));
+  const user = JSON.parse(localStorage.getItem("logado"));              /*verifica se há um usuário logado e mostra a tela apropriada*/
   if (user) showProfile(user);
   else showLogin();
 });
@@ -444,15 +444,14 @@ openLoginBtn.addEventListener("click", () => {
 closeLoginBtn.addEventListener("click", () => {
   loginOverlay.classList.add("overlay-hidden");
   
-  // ✅ CORREÇÃO: Mostra o botão novamente ao FECHAR o modal
+  //Mostra o botão novamente ao FECHAR o modal
   openLoginBtn.classList.remove("open-btn-hidden"); 
 });
 
-// =========================
-// TROCAR TELA
-// =========================
-goToRegister.addEventListener("click", (e) => {
-  e.preventDefault();
+// TROCAR TELAS
+
+goToRegister.addEventListener("click", (e) => {           /*CONFIGURA UM OUVINTE DE CLICK*/
+  e.preventDefault();               /*IMPEDE O COMPORTAMENTO PADRÃO DO LINK*/
   showRegister();
 });
 
@@ -466,9 +465,9 @@ goToLoginFromProfile.addEventListener("click", (e) => {
   showLogin();
 });
 
-// =========================
+
 // LOGIN
-// =========================
+
 loginForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
@@ -481,7 +480,7 @@ loginForm.addEventListener("submit", (e) => {
   }
 
   const users = getUsers();
-  const user = users.find((u) => u.cpf === cpf);
+  const user = users.find((u) => u.cpf === cpf);          /*procura o usuário pelo cpf*/
 
   if (!user) {
     alert("Usuário não encontrado! Faça cadastro.");
@@ -495,13 +494,13 @@ loginForm.addEventListener("submit", (e) => {
   }
 
   localStorage.setItem("logado", JSON.stringify(user));
-  openLoginBtn.textContent = user.nome.split(" ")[0];
+  openLoginBtn.textContent = user.nome.split(" ")[0];         /*atualiza o botão principal com o nome do usuário*/
   showProfile(user);
 });
 
-// =========================
+
 // CADASTRO
-// =========================
+
 registerForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
@@ -547,15 +546,15 @@ registerForm.addEventListener("submit", (e) => {
   showProfile(novoUser);
 });
 
-// =========================
-// LOGOUT (CORREÇÃO DE SOBREPOSIÇÃO) ✅
+
+// LOGOUT 
 // Garante que o botão principal não fique sobreposto após o logout.
-// =========================
+
 btnLogout.addEventListener("click", () => {
   localStorage.removeItem("logado");
   openLoginBtn.textContent = "LOGIN";
   
-  // ✅ CORREÇÃO: Mostra o botão da página principal novamente
+  /* Mostra o botão da página principal novamente*/
   openLoginBtn.classList.remove("open-btn-hidden"); 
   
   // O modal se fecha e a tela de login (oculta) é preparada para o próximo uso
@@ -563,11 +562,11 @@ btnLogout.addEventListener("click", () => {
   showLogin(); 
 });
 
-// =========================
+
 // MÁSCARAS
-// =========================
+
 regCpf.addEventListener("input", () => {
-  regCpf.value = maskCPF(regCpf.value);
+  regCpf.value = maskCPF(regCpf.value);                             
 });
 loginCpf.addEventListener("input", () => {
   loginCpf.value = maskCPF(loginCpf.value);
@@ -576,9 +575,9 @@ regTel.addEventListener("input", () => {
   regTel.value = maskPhone(regTel.value);
 });
 
-// =========================
-// MOSTRAR SENHA NOS INPUTS
-// =========================
+
+// MOSTRAR SENHA NOS INPUTS   
+
 document.querySelectorAll(".show-pass-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     const input = document.getElementById(btn.dataset.target);
@@ -586,13 +585,13 @@ document.querySelectorAll(".show-pass-btn").forEach(btn => {
   });
 });
 
-// =========================
+
 // CARREGAR USUÁRIO LOGADO
-// =========================
-const userLogado = JSON.parse(localStorage.getItem("logado"));
+
+const userLogado = JSON.parse(localStorage.getItem("logado"));      //verifica se há um usuário logado ao carregar a página
 if (userLogado) {
   openLoginBtn.textContent = userLogado.nome.split(" ")[0];
 }
 
-// O código não foi encerrado com '})();' para evitar o erro de escopo anterior.
+
 })();
