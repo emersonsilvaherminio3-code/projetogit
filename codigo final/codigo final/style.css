@@ -773,9 +773,9 @@ footer {
    cursor:pointer; 
    font-weight:700; 
    font-size:13px;
-   transition: transform .08s, 
-   box-shadow .12s, 
-   background .12s;
+   transition: transform .08s; 
+   box-shadow : .12s;
+   background : .12s;
 }
 .tamanho-btn:hover { 
      transform:translateY(-2px);
