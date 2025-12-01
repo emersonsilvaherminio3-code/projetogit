@@ -503,6 +503,7 @@ footer {
     .contatos-secao{
         width: 300px ;
     }
+
 }
 
 @media (max-width:500px){
@@ -528,45 +529,115 @@ footer {
         font-size: 2rem;
         text-align: center;
     }
+
+    .itens-cardapio .tamanhos{
+        width: auto;
+    }
+
+    .login-popup .close-btn{
+        font-size: 14px;
+        width: 14px;
+        height: 14px;
+    }
+
+   /* 1. Define o contexto de posicionamento para o botão */
+.password-wrapper {
+    position: relative; 
+    /* Garante que o botão posicionado absolutamente seja relativo a esta div. */
+    display: block; /* Garante que a div ocupe o espaço necessário */
 }
 
-@media(max-width:395px){
-    .content-sobre p{ 
-        text-align: center;
-        width: 250px;
+/* Estilo do input */
+.password-wrapper input{
+    font-size: 14px;
+    height: 36px;
+    padding-left: 35px;
+    /* 3. Adiciona padding-right para criar espaço para o botão. 
+       40px é suficiente para a maioria dos ícones. */
+    padding-right: 40px; 
+    width: 100%; /* Garante que o input preencha a largura do wrapper */
+    box-sizing: border-box; /* Recomenda-se para que o padding não aumente a largura total */
+}
+
+.show-pass-btn{
+    font-size: 1rem;
+    /* 2. Posiciona o botão absolutamente dentro do wrapper */
+    position: absolute; 
+    /* Coloca ele a 10px da borda direita */
+    right: 10px;
+    /* Centraliza verticalmente */
+    top: 50%; 
+    transform: translateY(-50%); 
+    
+    /* Remove padding desnecessário/problemático */
+    padding: 0; 
+
+    /* Estilos para parecer um ícone dentro do campo */
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 10; /* Garante que o botão fique acima do input */
+    
+}
+
+}
+
+@media(max-width:425px){
+    .sobre-nos p{
+        text-align:center ;
+        width: 350px;
     }
 
     .itens-cardapio{
-        width: 50%;
-        justify-content: center;
-        grid-template-columns: repeat(auto-fit, mixnmax(50px, 350px));
-    }
-
-    .itens-cardapio img{
-        width: 80%;
-        height: auto;
-    }
-
-    .itens-cardapio div{
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        gap: 25px;
         align-items: center;
     }
 
-    .itens-cardapio .info{
-        width: 100%;
-        height: 150px;
+    .produto {
+        max-width: 300px;  
+        margin: 15px auto;
     }
 
-    .itens-cardapio .info h4{
-        grid-template-columns: 93px 150px;
+    /* Imagem */
+    .produto img {
+        height: 170px; 
     }
 
-    .itens-cardapio .info .pedir-btn{
-        width: 100%;
-        font-size: 1.5rem;
+    /* Texto */
+    .produto h3 {
+        font-size: 18px;
     }
+
+    .produto .descrição {
+        font-size: 13px;
+    }
+
+    /* Botões */
+    .tamanho-btn {
+        font-size: 14px;
+        padding: 7px;
+    }
+
+    .pedir-btn {
+        font-size: 15px;
+        padding: 9px;
+    }
+
+    .produtos.info{
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        overflow: visible;
+    }
+
+    .produto{
+        height: auto;
+    }
+
+    
 
 }
 /* estado escondido por padrão */
@@ -618,8 +689,6 @@ footer {
     z-index: 20;
 }
   
-
-
 
 
 /* campos e botão */
@@ -704,9 +773,9 @@ footer {
    cursor:pointer; 
    font-weight:700; 
    font-size:13px;
-   transition: transform .08s, 
-   box-shadow .12s, 
-   background .12s;
+   transition: transform .08s; 
+   box-shadow : .12s;
+   background : .12s;
 }
 .tamanho-btn:hover { 
      transform:translateY(-2px);
